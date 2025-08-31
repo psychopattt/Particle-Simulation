@@ -1,28 +1,29 @@
-void UpdateSand(inout Particle topLeft, inout Particle topRight, inout Particle bottomRight, inout Particle bottomLeft, float random)
+bool IsMovableBySand(Particle particle, float random)
 {
-    if (topLeft.type == SAND)
+    switch (particle.type)
     {
-        if (bottomLeft.type == VOID)
-        {
-            if (random < 0.9)
-                SwapParticles(topLeft, bottomLeft);
-        }
-        else if (topRight.type == VOID && bottomRight.type == VOID)
-        {
-            SwapParticles(topLeft, bottomRight);
-        }
+        case VOID: return random < 0.9;
+        case WATER: return random < 0.5;
+        default: return false;
+    }
+}
+
+void UpdateSand(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float random)
+{
+    if (upLeft.type == SAND)
+    {
+        if (IsMovableBySand(downLeft, random))
+            SwapParticles(upLeft, downLeft);
+        else if (IsMovableBySand(upRight, random) && IsMovableBySand(downRight, random))
+            SwapParticles(upLeft, downRight);
     }
 
-    if (topRight.type == SAND)
+    if (upRight.type == SAND)
     {
-        if (bottomRight.type == VOID)
-        {
-            if (random < 0.9)
-                SwapParticles(topRight, bottomRight);
-        }
-        else if (topLeft.type == VOID && bottomLeft.type == VOID)
-        {
-            SwapParticles(topRight, bottomLeft);
-        }
+        if (IsMovableBySand(downRight, random))
+            SwapParticles(upRight, downRight);
+        else if (IsMovableBySand(upLeft, random) && IsMovableBySand(downLeft, random))
+            SwapParticles(upRight, downLeft);
     }
 }

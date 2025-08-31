@@ -48,15 +48,17 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 }
 
 #include "UpdateSand.glsl"
+#include "UpdateWater.glsl"
 
-void UpdateParticles(inout Particle topLeft, inout Particle topRight, inout Particle bottomRight,
-    inout Particle bottomLeft, float randomA, float randomB, float randomC)
+void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
+    inout Particle downRight, float randomA, float randomB, float randomC)
 {
-    UpdateSand(topLeft, topRight, bottomRight, bottomLeft, randomA);
+    UpdateSand(upLeft, upRight, downLeft, downRight, randomA);
+    UpdateWater(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
 }
 
-void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle topLeft, Particle topRight,
-    Particle bottomRight, Particle bottomLeft)
+void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
+    Particle downLeft, Particle downRight)
 {
     uint globalParticleId = GetPositionId(position);
     ivec2 localParticlePosition = (position + offset) & 1;
@@ -65,16 +67,16 @@ void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle topLeft, Particle
     switch (localParticleId)
     {
         case 0:
-            OutputParticles[globalParticleId] = bottomLeft;
+            OutputParticles[globalParticleId] = downLeft;
             break;
         case 1:
-            OutputParticles[globalParticleId] = bottomRight;
+            OutputParticles[globalParticleId] = downRight;
             break;
         case 2:
-            OutputParticles[globalParticleId] = topLeft;
+            OutputParticles[globalParticleId] = upLeft;
             break;
         case 3:
-            OutputParticles[globalParticleId] = topRight;
+            OutputParticles[globalParticleId] = upRight;
             break;
     }
 }
@@ -89,15 +91,15 @@ void main()
     ivec2 offset = GetMargolusOffset();
     ivec2 evenPosition = ((position + offset) / 2) * 2 - offset;
 
-    Particle topLeft = GetParticle(evenPosition + ivec2(0, 1));
-    Particle topRight = GetParticle(evenPosition + ivec2(1, 1));
-    Particle bottomRight = GetParticle(evenPosition + ivec2(1, 0));
-    Particle bottomLeft = GetParticle(evenPosition);
+    Particle upLeft = GetParticle(evenPosition + ivec2(0, 1));
+    Particle upRight = GetParticle(evenPosition + ivec2(1, 1));
+    Particle downRight = GetParticle(evenPosition + ivec2(1, 0));
+    Particle downLeft = GetParticle(evenPosition);
 
     float randomA = HashVec2(evenPosition);
     float randomB = HashVec2(evenPosition + randomA);
     float randomC = HashVec2(evenPosition + randomB);
 
-    UpdateParticles(topLeft, topRight, bottomRight, bottomLeft, randomA, randomB, randomC);
-    SetUpdatedParticle(position, offset, topLeft, topRight, bottomRight, bottomLeft);
+    UpdateParticles(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
+    SetUpdatedParticle(position, offset, upLeft, upRight, downLeft, downRight);
 }
