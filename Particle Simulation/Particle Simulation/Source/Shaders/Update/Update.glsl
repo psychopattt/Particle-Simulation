@@ -54,7 +54,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Partic
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
     UpdateSand(upLeft, upRight, downLeft, downRight, randomA);
-    UpdateWater(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
+    UpdateWater(upLeft, upRight, downLeft, downRight, randomA, randomB);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
