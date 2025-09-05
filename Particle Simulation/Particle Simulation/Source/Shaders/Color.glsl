@@ -20,6 +20,7 @@ vec3 GetParticleColor(Particle particle)
         case SAND: return vec3(0.82, 0.82, 0) + (particle.shade / 8);
         case WATER: return vec3(0, 0, 0.8) + (particle.shade / 40);
         case WALL: return vec3(0.293) + (particle.shade / 100);
+        case WOOD: return vec3(0.275, 0.157, 0) + (particle.shade / 50);
         default: return vec3(1, 0, 1);
     }
 }

@@ -2,6 +2,7 @@
 #define SAND 1
 #define WATER 2
 #define WALL 3
+#define WOOD 4
 
 struct Particle {
     int type;
