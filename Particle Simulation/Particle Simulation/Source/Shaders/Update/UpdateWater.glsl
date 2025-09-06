@@ -1,6 +1,11 @@
 bool IsMovableByWater(Particle particle)
 {
-    return particle.type == VOID;
+    switch (particle.type)
+    {
+        case VOID: return true;
+        case SMOKE: return true;
+        default: return false;
+    }
 }
 
 void MoveWaterDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
