@@ -50,6 +50,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateSand.glsl"
 #include "UpdateWater.glsl"
 #include "UpdateSmoke.glsl"
+#include "UpdateFire.glsl"
 
 void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
@@ -57,6 +58,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Partic
     UpdateSand(upLeft, upRight, downLeft, downRight, randomA);
     UpdateWater(upLeft, upRight, downLeft, downRight, randomA, randomB);
     UpdateSmoke(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
+    UpdateFire(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
