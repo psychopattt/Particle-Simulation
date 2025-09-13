@@ -5,6 +5,7 @@
 #define WOOD 4
 #define SMOKE 5
 #define FIRE 6
+#define KEROSENE 7
 
 struct Particle {
     int type;
