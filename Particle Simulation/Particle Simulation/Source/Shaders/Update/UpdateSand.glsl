@@ -3,9 +3,9 @@ bool IsMovableBySand(Particle particle, float random)
     switch (particle.type)
     {
         case VOID: return random < 0.9;
-        case WATER: return random < 0.5;
+        case WATER: return random < 0.4;
         case SMOKE: return random < 0.88;
-        case KEROSENE: return random < 0.6;
+        case KEROSENE: return random < 0.48;
         default: return false;
     }
 }
