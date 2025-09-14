@@ -23,6 +23,7 @@ vec3 GetParticleColor(Particle particle)
         case WOOD: return vec3(0.275, 0.157, 0) + (particle.shade * 0.02);
         case SMOKE: return vec3(0.22) + (particle.shade * 0.2);
         case FIRE: return vec3(0.8, (particle.shade + 0.5) * 0.75, 0);
+        case STONE: return vec3(0.24) + (particle.shade * 0.025);
         case KEROSENE: return vec3(0.73, particle.shade * 0.015 + 0.6, 0.08);
         default: return vec3(1, 0, 1);
     }
