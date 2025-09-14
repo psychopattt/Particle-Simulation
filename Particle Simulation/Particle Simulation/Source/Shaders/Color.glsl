@@ -17,11 +17,11 @@ vec3 GetParticleColor(Particle particle)
     switch (particle.type)
     {
         case VOID: return voidColor;
-        case SAND: return vec3(0.82, 0.82, 0) + (particle.shade / 8);
-        case WATER: return vec3(0, 0, 0.8) + (particle.shade / 40);
-        case WALL: return vec3(0.293) + (particle.shade / 100);
-        case WOOD: return vec3(0.275, 0.157, 0) + (particle.shade / 50);
-        case SMOKE: return vec3(0.22) + (particle.shade / 5);
+        case SAND: return vec3(0.82, 0.82, 0) + (particle.shade * 0.125);
+        case WATER: return vec3(0, 0, 0.8) + (particle.shade * 0.025);
+        case WALL: return vec3(0.293) + (particle.shade * 0.01);
+        case WOOD: return vec3(0.275, 0.157, 0) + (particle.shade * 0.02);
+        case SMOKE: return vec3(0.22) + (particle.shade * 0.2);
         case FIRE: return vec3(0.8, (particle.shade + 0.5) * 0.75, 0);
         case KEROSENE: return vec3(0.73, particle.shade * 0.015 + 0.6, 0.08);
         default: return vec3(1, 0, 1);
