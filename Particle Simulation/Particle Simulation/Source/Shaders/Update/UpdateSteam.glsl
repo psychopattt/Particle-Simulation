@@ -29,7 +29,7 @@ void DissipateSteam(inout Particle upLeft, inout Particle upRight, float randomA
 }
 
 void MoveSteamLaterally(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomB, float randomA)
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
 {
     if (randomB < 0.14)
     {
@@ -72,7 +72,7 @@ void MoveRightSteamUp(inout Particle upLeft, inout Particle upRight,
 }
 
 void MoveSteamUp(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomC, float randomA)
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
 {
     if (randomC < 0.37)
     {
@@ -90,6 +90,6 @@ void UpdateSteam(inout Particle upLeft, inout Particle upRight, inout Particle d
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
     DissipateSteam(upLeft, upRight, randomA, randomB);
-    MoveSteamLaterally(upLeft, upRight, downLeft, downRight, randomB, randomA);
-    MoveSteamUp(upLeft, upRight, downLeft, downRight, randomC, randomA);
+    MoveSteamLaterally(upLeft, upRight, downLeft, downRight, randomA, randomB);
+    MoveSteamUp(upLeft, upRight, downLeft, downRight, randomA, randomC);
 }
