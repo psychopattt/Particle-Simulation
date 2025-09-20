@@ -4,6 +4,7 @@ bool IsMovableByKerosene(Particle particle)
     {
         case VOID: return true;
         case SMOKE: return true;
+        case STEAM: return true;
         default: return false;
     }
 }

@@ -17,6 +17,7 @@ enum class ParticleType : int
 	Fire,
 	Stone,
 	Kerosene,
+	Steam,
 
 	ParticleCount
 };
@@ -30,5 +31,6 @@ inline const char* ParticleLabels[] = {
 	"Smoke",
 	"Fire",
 	"Stone",
-	"Kerosene"
+	"Kerosene",
+	"Steam"
 };
