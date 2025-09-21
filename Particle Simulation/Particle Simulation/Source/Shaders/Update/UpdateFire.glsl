@@ -17,6 +17,15 @@ bool CanCatchFire(Particle particle, float random)
     }
 }
 
+bool CanQuenchFire(Particle particle, float random)
+{
+    switch (particle.type)
+    {
+        case WATER: return random < 0.175;
+        default: return false;
+    }
+}
+
 bool IsMovableByFire(Particle particle)
 {
     switch (particle.type)
@@ -52,14 +61,29 @@ void QuenchFire(inout Particle particle, float random)
         particle.type = random < 0.3 ? SMOKE : VOID;
 }
 
-void QuenchFire(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomC)
+void QuenchFireByParticle(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float random)
+{
+    bool quench = CanQuenchFire(upLeft, random) || CanQuenchFire(upRight, random) ||
+        CanQuenchFire(downLeft, random) || CanQuenchFire(downRight, random);
+
+    if (quench)
+    {
+        QuenchFire(upLeft, 0);
+        QuenchFire(upRight, 0);
+        QuenchFire(downLeft, 0);
+        QuenchFire(downRight, 0);
+    }
+}
+
+void QuenchFireByFlammability(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
 {
     float averageFlammability = 0.25 * (
-        float(CanCatchFire(upLeft, 1) || CanIgniteFire(upLeft)) +
-        float(CanCatchFire(upRight, 1) || CanIgniteFire(upRight)) +
-        float(CanCatchFire(downLeft, 1) || CanIgniteFire(downLeft)) +
-        float(CanCatchFire(downRight, 1) || CanIgniteFire(downRight))
+        float(CanCatchFire(upLeft, 0) || CanIgniteFire(upLeft)) +
+        float(CanCatchFire(upRight, 0) || CanIgniteFire(upRight)) +
+        float(CanCatchFire(downLeft, 0) || CanIgniteFire(downLeft)) +
+        float(CanCatchFire(downRight, 0) || CanIgniteFire(downRight))
     );
 
     float quenchProbability = 0.102 - (averageFlammability * 0.1);
@@ -69,6 +93,13 @@ void QuenchFire(inout Particle upLeft, inout Particle upRight, inout Particle do
         QuenchFire(downLeft, randomC);
         QuenchFire(downRight, randomC);
     }
+}
+
+void QuenchFire(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
+    inout Particle downRight, float randomA, float randomC)
+{
+    QuenchFireByParticle(upLeft, upRight, downLeft, downRight, randomC);
+    QuenchFireByFlammability(upLeft, upRight, downLeft, downRight, randomA, randomC);
 }
 
 void UpdateFireShade(inout Particle particle, float random)

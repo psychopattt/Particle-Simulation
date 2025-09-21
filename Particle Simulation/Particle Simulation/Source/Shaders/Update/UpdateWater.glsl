@@ -10,26 +10,6 @@ bool IsMovableByWater(Particle particle, float random)
     }
 }
 
-void QuenchFireByWater(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float random)
-{
-    if ((upLeft.type == WATER || upRight.type == WATER ||
-        downLeft.type == WATER || downRight.type == WATER) && random < 0.175)
-    {
-        if (upLeft.type == FIRE)
-            upLeft.type = SMOKE;
-
-        if (upRight.type == FIRE)
-            upRight.type = SMOKE;
-
-        if (downLeft.type == FIRE)
-            downLeft.type = SMOKE;
-
-        if (downRight.type == FIRE)
-            downRight.type = SMOKE;
-    }
-}
-
 void MoveWaterDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
 {
@@ -83,7 +63,6 @@ void UpdateWater(inout Particle upLeft, inout Particle upRight, inout Particle d
 {
     bool leftFell = false;
     bool rightFell = false;
-    QuenchFireByWater(upLeft, upRight, downLeft, downRight, randomA);
     MoveWaterDown(upLeft, upRight, downLeft, downRight, randomA, leftFell, rightFell);
     MoveWaterLaterally(upLeft, upRight, downLeft, downRight, randomB, leftFell, rightFell);
 }
