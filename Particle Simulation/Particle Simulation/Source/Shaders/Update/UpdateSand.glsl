@@ -7,6 +7,7 @@ bool IsMovableBySand(Particle particle, float random)
         case SMOKE: return random < 0.88;
         case KEROSENE: return random < 0.48;
         case STEAM: return random < 0.9;
+        case SEAWATER: return random < 0.39;
         default: return false;
     }
 }

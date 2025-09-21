@@ -26,6 +26,7 @@ vec3 GetParticleColor(Particle particle)
         case STONE: return vec3(0.24) + (particle.shade * 0.025);
         case KEROSENE: return vec3(0.73, particle.shade * 0.015 + 0.6, 0.08);
         case STEAM: return vec3(0.78) + (particle.shade * 0.03);
+        case SEAWATER: return vec3(0, 0.1, 0.7) + (particle.shade * 0.015);
         default: return vec3(1, 0, 1);
     }
 }

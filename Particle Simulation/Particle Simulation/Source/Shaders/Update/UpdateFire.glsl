@@ -22,6 +22,7 @@ bool CanQuenchFire(Particle particle, float random)
     switch (particle.type)
     {
         case WATER: return random < 0.175;
+        case SEAWATER: return random < 0.172;
         default: return false;
     }
 }
