@@ -3,6 +3,7 @@ bool CanIgniteFire(Particle particle)
     switch (particle.type)
     {
         case FIRE: return true;
+        case LAVA: return true;
         default: return false;
     }
 }

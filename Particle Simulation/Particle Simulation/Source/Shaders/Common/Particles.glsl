@@ -9,6 +9,7 @@
 #define KEROSENE 8
 #define STEAM 9
 #define SEAWATER 10
+#define LAVA 11
 
 struct Particle {
     int type;

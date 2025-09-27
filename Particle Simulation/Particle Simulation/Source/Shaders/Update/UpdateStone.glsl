@@ -8,6 +8,7 @@ bool IsMovableByStone(Particle particle, float random)
         case KEROSENE: return random < 0.72;
         case STEAM: return random < 0.9;
         case SEAWATER: return random < 0.63;
+        case LAVA: return random < 0.21;
         default: return false;
     }
 }
