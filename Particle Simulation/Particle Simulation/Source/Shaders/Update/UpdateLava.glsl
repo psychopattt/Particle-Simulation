@@ -1,3 +1,15 @@
+bool CanSolidifyLava(Particle particle, float random)
+{
+    switch (particle.type)
+    {
+        case WATER: return random < 0.18;
+        case FIRE: return false;
+        case SEAWATER: return random < 0.18;
+        case LAVA: return false;
+        default: return random < 0.003;
+    }
+}
+
 bool IsMovableByLava(Particle particle, float random)
 {
     switch (particle.type)
@@ -11,6 +23,32 @@ bool IsMovableByLava(Particle particle, float random)
         case SEAWATER: return random < 0.21;
         default: return false;
     }
+}
+
+bool SolidifyLava(inout Particle particle, float probability, float random)
+{
+    bool solidified = particle.type == LAVA && random < probability;
+
+    if (solidified)
+        particle.type = STONE;
+
+    return solidified;
+}
+
+void SolidifyLava(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
+{
+    float probability = 0.25 * (
+        float(CanSolidifyLava(upLeft, randomC)) +
+        float(CanSolidifyLava(upRight, randomC)) +
+        float(CanSolidifyLava(downLeft, randomC)) +
+        float(CanSolidifyLava(downRight, randomC))
+    );
+
+    bool solidified = SolidifyLava(upLeft, probability * 0.25, randomA);
+    solidified = solidified || SolidifyLava(upRight, probability * 0.5, randomA);
+    solidified = solidified || SolidifyLava(downLeft, probability * 0.75, randomA);
+    solidified = solidified || SolidifyLava(downRight, probability, randomA);
 }
 
 void UpdateLavaShade(inout Particle particle, float random)
@@ -82,6 +120,7 @@ void MoveLavaLaterally(inout Particle upLeft, inout Particle upRight, inout Part
 void UpdateLava(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
+    SolidifyLava(upLeft, upRight, downLeft, downRight, randomA, randomC);
     UpdateLavaShade(upLeft, upRight, downLeft, downRight, randomA);
 
     bool leftFell = false;
