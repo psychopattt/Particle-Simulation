@@ -1,3 +1,13 @@
+bool CanVaporizeWater(Particle particle, float random)
+{
+    switch (particle.type)
+    {
+        case FIRE: return random < 0.014;
+        case LAVA: return random < 0.07;
+        default: return false;
+    }
+}
+
 bool IsMovableByWater(Particle particle, float random)
 {
     switch (particle.type)
@@ -7,6 +17,31 @@ bool IsMovableByWater(Particle particle, float random)
         case KEROSENE: return random < 0.45;
         case STEAM: return true;
         default: return false;
+    }
+}
+
+void VaporizeWater(inout Particle particle)
+{
+    if (particle.type == WATER)
+        particle.type = STEAM;
+}
+
+void VaporizeWater(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+{
+    float vaporizeProbability = 0.25 * (
+        float(CanVaporizeWater(upLeft, randomB)) +
+        float(CanVaporizeWater(upRight, randomB)) +
+        float(CanVaporizeWater(downLeft, randomB)) +
+        float(CanVaporizeWater(downRight, randomB))
+    );
+
+    if (randomA < vaporizeProbability)
+    {
+        VaporizeWater(upLeft);
+        VaporizeWater(upRight);
+        VaporizeWater(downLeft);
+        VaporizeWater(downRight);
     }
 }
 
@@ -61,6 +96,8 @@ void MoveWaterLaterally(inout Particle upLeft, inout Particle upRight, inout Par
 void UpdateWater(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB)
 {
+    VaporizeWater(upLeft, upRight, downLeft, downRight, randomA, randomB);
+
     bool leftFell = false;
     bool rightFell = false;
     MoveWaterDown(upLeft, upRight, downLeft, downRight, randomA, leftFell, rightFell);
