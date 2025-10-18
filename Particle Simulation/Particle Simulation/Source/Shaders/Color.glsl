@@ -28,6 +28,7 @@ vec3 GetParticleColor(Particle particle)
         case STEAM: return vec3(0.78) + (particle.shade * 0.03);
         case SEAWATER: return vec3(0, 0.1, 0.7) + (particle.shade * 0.015);
         case LAVA: return vec3(0.76, particle.shade * 0.05 + 0.33, 0);
+        case ICE: return vec3(particle.shade * 0.34 + 0.17, 0.49, 0.7);
         default: return vec3(1, 0, 1);
     }
 }

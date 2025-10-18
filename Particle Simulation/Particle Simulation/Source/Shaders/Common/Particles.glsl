@@ -10,6 +10,7 @@
 #define STEAM 9
 #define SEAWATER 10
 #define LAVA 11
+#define ICE 12
 
 struct Particle {
     int type;
