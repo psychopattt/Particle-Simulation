@@ -10,7 +10,7 @@ bool CanSolidifyLava(Particle particle, float random)
     }
 }
 
-bool IsMeltableByLava(Particle particle, float random)
+bool CanMeltIntoLava(Particle particle, float random)
 {
     switch (particle.type)
     {
@@ -80,7 +80,7 @@ void UpdateLavaShade(inout Particle upLeft, inout Particle upRight,
 
 void MeltParticleIntoLava(inout Particle particle, float random)
 {
-    if (IsMeltableByLava(particle, random))
+    if (CanMeltIntoLava(particle, random))
         particle.type = LAVA;
 }
 
