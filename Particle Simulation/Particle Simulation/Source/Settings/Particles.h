@@ -21,6 +21,7 @@ enum class ParticleType : int
 	Seawater,
 	Lava,
 	Ice,
+	Salt,
 
 	ParticleCount
 };
@@ -38,5 +39,6 @@ inline const char* ParticleLabels[] = {
 	"Steam",
 	"Seawater",
 	"Lava",
-	"Ice"
+	"Ice",
+	"Salt"
 };

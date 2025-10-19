@@ -9,6 +9,7 @@ bool CanMeltIce(Particle particle, float random)
     {
         case FIRE: return random < 0.4;
         case LAVA: return random < 0.3;
+        case SALT: return random < 0.01;
         default: return false;
     }
 }

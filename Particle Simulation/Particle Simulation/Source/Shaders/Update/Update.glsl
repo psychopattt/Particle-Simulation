@@ -57,6 +57,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateSeawater.glsl"
 #include "UpdateLava.glsl"
 #include "UpdateIce.glsl"
+#include "UpdateSalt.glsl"
 
 void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
@@ -71,6 +72,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Partic
     UpdateSeawater(upLeft, upRight, downLeft, downRight, randomA, randomB);
     UpdateLava(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
     UpdateIce(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
+    UpdateSalt(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,

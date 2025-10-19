@@ -11,6 +11,7 @@
 #define SEAWATER 10
 #define LAVA 11
 #define ICE 12
+#define SALT 13
 
 struct Particle {
     int type;
