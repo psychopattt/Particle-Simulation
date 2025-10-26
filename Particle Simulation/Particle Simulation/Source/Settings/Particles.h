@@ -23,6 +23,7 @@ enum class ParticleType : int
 	Ice,
 	Salt,
 	Sawdust,
+	Acid,
 
 	ParticleCount
 };
@@ -42,5 +43,6 @@ inline const char* ParticleLabels[] = {
 	"Lava",
 	"Ice",
 	"Salt",
-	"Sawdust"
+	"Sawdust",
+	"Acid"
 };

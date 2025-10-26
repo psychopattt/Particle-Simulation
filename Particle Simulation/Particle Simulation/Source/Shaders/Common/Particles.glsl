@@ -13,6 +13,7 @@
 #define ICE 12
 #define SALT 13
 #define SAWDUST 14
+#define ACID 15
 
 struct Particle {
     int type;

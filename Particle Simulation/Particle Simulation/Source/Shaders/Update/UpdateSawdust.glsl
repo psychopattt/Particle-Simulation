@@ -10,6 +10,7 @@ bool IsMovableBySawdust(Particle particle, float random)
         case STEAM: return random < 0.9;
         case SEAWATER: return random < 0.34;
         case LAVA: return random < 0.11;
+        case ACID: return random < 0.19;
         default: return false;
     }
 }

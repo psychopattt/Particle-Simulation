@@ -31,6 +31,7 @@ bool IsMovableByLava(Particle particle, float random)
         case KEROSENE: return random < 0.24;
         case STEAM: return random < 0.7;
         case SEAWATER: return random < 0.21;
+        case ACID: return random < 0.28;
         default: return false;
     }
 }

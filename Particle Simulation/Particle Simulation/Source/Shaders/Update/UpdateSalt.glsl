@@ -9,6 +9,7 @@ bool IsMovableBySalt(Particle particle, float random)
         case STEAM: return random < 0.9;
         case SEAWATER: return random < 0.38;
         case LAVA: return random < 0.125;
+        case ACID: return random < 0.21;
         default: return false;
     }
 }
