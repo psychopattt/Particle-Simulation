@@ -14,22 +14,28 @@ bool IsMovableByStone(Particle particle, float random)
     }
 }
 
+void UpdateStoneSide(inout Particle moving, inout Particle side,
+    inout Particle bottom, inout Particle diagonal, float random)
+{
+    float diagonalRandom = random * 10;
+
+    if (moving.type == STONE)
+    {
+        if (IsMovableByStone(bottom, random))
+        {
+            SwapParticles(moving, bottom);
+        }
+        else if (IsMovableByStone(side, diagonalRandom) &&
+            IsMovableByStone(diagonal, diagonalRandom))
+        {
+            SwapParticles(moving, diagonal);
+        }
+    }
+}
+
 void UpdateStone(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    if (upLeft.type == STONE)
-    {
-        if (IsMovableByStone(downLeft, random))
-            SwapParticles(upLeft, downLeft);
-        else if (IsMovableByStone(upRight, random) && IsMovableByStone(downRight, random))
-            SwapParticles(upLeft, downRight);
-    }
-
-    if (upRight.type == STONE)
-    {
-        if (IsMovableByStone(downRight, random))
-            SwapParticles(upRight, downRight);
-        else if (IsMovableByStone(upLeft, random) && IsMovableByStone(downLeft, random))
-            SwapParticles(upRight, downLeft);
-    }
+    UpdateStoneSide(upLeft, upRight, downLeft, downRight, random);
+    UpdateStoneSide(upRight, upLeft, downRight, downLeft, random);
 }
