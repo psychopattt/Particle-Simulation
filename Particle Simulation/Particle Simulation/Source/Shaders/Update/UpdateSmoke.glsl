@@ -6,12 +6,7 @@ bool IsMovableBySmoke(Particle particle)
 void DissipateSmoke(inout Particle particle)
 {
     if (particle.type == SMOKE)
-    {
-        if (particle.shade < -0.6)
-            particle = Particle(VOID, 0);
-        else
-            particle.shade -= 0.01;
-    }
+        particle.shade < -0.6 ? particle.type = VOID : particle.shade -= 0.01;
 }
 
 void DissipateSmoke(inout Particle upLeft, inout Particle upRight, float random)
