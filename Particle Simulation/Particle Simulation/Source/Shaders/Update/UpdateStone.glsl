@@ -14,7 +14,7 @@ bool IsMovableByStone(Particle particle, float random)
     }
 }
 
-void UpdateStoneSide(inout Particle moving, inout Particle side,
+void UpdateStoneSide(inout Particle moving, Particle side,
     inout Particle bottom, inout Particle diagonal, float random)
 {
     float diagonalRandom = random * 10;
