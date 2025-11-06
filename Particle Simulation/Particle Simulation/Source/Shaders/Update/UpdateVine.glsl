@@ -21,6 +21,7 @@ bool CanSupportVine(Particle particle, float random)
         case STONE: return random < 0.12;
         case ICE: return random < 0.04;
         case SAWDUST: return random < 0.13;
+        case RUST: return random < 0.12;
         default: return false;
     }
 }

@@ -33,6 +33,7 @@ vec3 GetParticleColor(Particle particle)
         case SAWDUST: return particle.shade * vec3(0, 0.05, 0.1) + vec3(0.67, 0.54, 0.33);
         case ACID: return vec3(particle.shade * 0.3 + 0.25, 0.9, 0);
         case VINE: return vec3(0, particle.shade * 0.15 + 0.225, 0.1);
+        case RUST: return particle.shade * vec3(0.46, 0.16, 0) + vec3(0.34, 0.12, 0);
         default: return vec3(1, 0, 1);
     }
 }

@@ -16,6 +16,7 @@ bool CanMeltIntoLava(Particle particle, float random)
     {
         case STONE: return random < 0.12;
         case SALT: return random < 0.17;
+        case RUST: return random < 0.06;
         default: return false;
     }
 }
