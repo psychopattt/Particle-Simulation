@@ -15,6 +15,7 @@ bool IsDissolvableByAcid(Particle particle, float random)
         case SAWDUST: return random < 0.074;
         case VINE: return random < 0.059;
         case RUST: return random < 0.01;
+        case IRON: return random < 0.006;
         default: return false;
     }
 }

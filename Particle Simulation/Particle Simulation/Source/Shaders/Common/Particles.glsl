@@ -16,6 +16,7 @@
 #define ACID 15
 #define VINE 16
 #define RUST 17
+#define IRON 18
 
 struct Particle {
     int type;
