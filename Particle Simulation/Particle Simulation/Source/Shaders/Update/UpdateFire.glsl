@@ -16,6 +16,7 @@ bool CanCatchFire(Particle particle, float random)
         case KEROSENE: return random < 0.18;
         case SAWDUST: return random < 0.11;
         case VINE: return random < 0.1;
+        case METHANE: return random < 0.38;
         default: return false;
     }
 }

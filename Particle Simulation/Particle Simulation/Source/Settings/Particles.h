@@ -27,6 +27,7 @@ enum class ParticleType : int
 	Vine,
 	Rust,
 	Iron,
+	Methane,
 
 	ParticleCount
 };
@@ -50,5 +51,6 @@ inline const char* ParticleLabels[] = {
 	"Acid",
 	"Vine",
 	"Rust",
-	"Iron"
+	"Iron",
+	"Methane"
 };

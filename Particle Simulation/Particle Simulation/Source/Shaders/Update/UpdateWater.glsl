@@ -16,6 +16,7 @@ bool IsMovableByWater(Particle particle, float random)
         case SMOKE: return true;
         case KEROSENE: return random < 0.45;
         case STEAM: return true;
+        case METHANE: return true;
         default: return false;
     }
 }
