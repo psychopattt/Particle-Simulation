@@ -35,7 +35,7 @@ vec3 GetParticleColor(Particle particle)
         case VINE: return vec3(0, particle.shade * 0.15 + 0.225, 0.1);
         case RUST: return particle.shade * vec3(0.46, 0.16, 0) + vec3(0.34, 0.12, 0);
         case IRON: return particle.shade * 0.01 + vec3(0.31, 0.34, 0.39);
-        case METHANE: return particle.shade * 0.02 + vec3(0.8, 0.65, 0.65);
+        case METHANE: return particle.shade * 0.02 + vec3(0.65, 0.77, 0.8);
         default: return vec3(1, 0, 1);
     }
 }
