@@ -54,6 +54,6 @@ void MoveMethaneUp(inout Particle upLeft, inout Particle upRight,
 void UpdateMethane(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
 {
-    MoveMethaneLaterally(upLeft, upRight, downLeft, downRight, randomA);
+    MoveMethaneLaterally(upLeft, upRight, downLeft, downRight, randomA * 1.17);
     MoveMethaneUp(upLeft, upRight, downLeft, downRight, randomA, randomB);
 }
