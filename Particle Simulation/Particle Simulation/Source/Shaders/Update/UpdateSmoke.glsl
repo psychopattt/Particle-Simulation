@@ -1,6 +1,10 @@
-bool IsMovableBySmoke(Particle particle)
+bool IsMovableBySmoke(Particle particle, float random)
 {
-    return particle.type == VOID;
+    switch (particle.type)
+    {
+        case VOID: return random < 0.4;
+        default: return false;
+    }
 }
 
 void DissipateSmoke(inout Particle particle)
@@ -18,66 +22,53 @@ void DissipateSmoke(inout Particle upLeft, inout Particle upRight, float random)
     }
 }
 
+void MoveSmokeLaterally(inout Particle left, inout Particle right, float random)
+{
+    if ((left.type == SMOKE && IsMovableBySmoke(right, random)) ||
+        (right.type == SMOKE && IsMovableBySmoke(left, random)))
+    {
+        SwapParticles(left, right);
+    }
+}
+
 void MoveSmokeLaterally(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    if (random < 0.25)
-    {
-        if ((upLeft.type == SMOKE && IsMovableBySmoke(upRight)) ||
-            (upRight.type == SMOKE && IsMovableBySmoke(upLeft)))
-        {
-            SwapParticles(upLeft, upRight);
-        }
-
-        if ((downLeft.type == SMOKE && IsMovableBySmoke(downRight)) ||
-            (downRight.type == SMOKE && IsMovableBySmoke(downLeft)))
-        {
-            SwapParticles(downLeft, downRight);
-        }
-    }
+    MoveSmokeLaterally(upLeft, upRight, random);
+    MoveSmokeLaterally(downLeft, downRight, random);
 }
 
-void MoveLeftSmokeUp(inout Particle upLeft, inout Particle upRight, inout Particle downLeft)
+void MoveSmokeUp(inout Particle moving, inout Particle top,
+    inout Particle diagonal, float random)
 {
-    if (downLeft.type == SMOKE)
+    if (moving.type == SMOKE)
     {
-        if (IsMovableBySmoke(upLeft))
-            SwapParticles(downLeft, upLeft);
-        else if (IsMovableBySmoke(upRight))
-            SwapParticles(downLeft, upRight);
-    }
-}
-
-void MoveRightSmokeUp(inout Particle upLeft, inout Particle upRight, inout Particle downRight)
-{
-    if (downRight.type == SMOKE)
-    {
-        if (IsMovableBySmoke(upRight))
-            SwapParticles(downRight, upRight);
-        else if (IsMovableBySmoke(upLeft))
-            SwapParticles(downRight, upLeft);
+        if (IsMovableBySmoke(top, random))
+            SwapParticles(moving, top);
+        else if (IsMovableBySmoke(diagonal, random))
+            SwapParticles(moving, diagonal);
     }
 }
 
 void MoveSmokeUp(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float random)
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
 {
-    if (random < 0.2)
+    if (randomB < 0.5)
     {
-        MoveLeftSmokeUp(upLeft, upRight, downLeft);
-        MoveRightSmokeUp(upLeft, upRight, downRight);
+        MoveSmokeUp(downLeft, upLeft, upRight, randomA);
+        MoveSmokeUp(downRight, upRight, upLeft, randomA);
     }
-    else if (random < 0.4)
+    else
     {
-        MoveRightSmokeUp(upLeft, upRight, downRight);
-        MoveLeftSmokeUp(upLeft, upRight, downLeft);
+        MoveSmokeUp(downRight, upRight, upLeft, randomA);
+        MoveSmokeUp(downLeft, upLeft, upRight, randomA);
     }
 }
 
 void UpdateSmoke(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
-    DissipateSmoke(upLeft, upRight, randomA);
-    MoveSmokeLaterally(upLeft, upRight, downLeft, downRight, randomB);
-    MoveSmokeUp(upLeft, upRight, downLeft, downRight, randomC);
+    DissipateSmoke(upLeft, upRight, randomC);
+    MoveSmokeLaterally(upLeft, upRight, downLeft, downRight, randomA * 1.6);
+    MoveSmokeUp(upLeft, upRight, downLeft, downRight, randomA, randomB);
 }
