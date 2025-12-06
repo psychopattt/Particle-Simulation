@@ -4,6 +4,7 @@ bool IsMovableByMethane(Particle particle, float random)
     {
         case VOID: return random < 0.6;
         case SMOKE: return random < 0.24;
+        case AMMONIA: return random < 0.05;
         default: return false;
     }
 }

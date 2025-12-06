@@ -11,6 +11,7 @@ bool IsMovableBySand(Particle particle, float random)
         case LAVA: return random < 0.13;
         case ACID: return random < 0.22;
         case METHANE: return random < 0.89;
+        case AMMONIA: return random < 0.89;
         default: return false;
     }
 }

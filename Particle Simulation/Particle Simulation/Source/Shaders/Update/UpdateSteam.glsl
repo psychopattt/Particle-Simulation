@@ -5,6 +5,7 @@ bool IsMovableBySteam(Particle particle, float random)
         case VOID: return random < 0.74;
         case SMOKE: return random < 0.3;
         case METHANE: return random < 0.18;
+        case AMMONIA: return random < 0.19;
         default: return false;
     }
 }

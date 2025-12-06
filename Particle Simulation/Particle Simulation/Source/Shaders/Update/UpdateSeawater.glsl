@@ -18,6 +18,7 @@ bool IsMovableBySeawater(Particle particle, float random)
         case KEROSENE: return random < 0.49;
         case STEAM: return true;
         case METHANE: return true;
+        case AMMONIA: return true;
         default: return false;
     }
 }

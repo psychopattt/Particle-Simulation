@@ -11,6 +11,7 @@ bool IsMovableByRust(Particle particle, float random)
         case LAVA: return random < 0.24;
         case ACID: return random < 0.4;
         case METHANE: return random < 0.9;
+        case AMMONIA: return random < 0.9;
         default: return false;
     }
 }

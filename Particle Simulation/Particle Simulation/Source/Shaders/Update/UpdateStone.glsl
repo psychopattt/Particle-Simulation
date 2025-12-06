@@ -11,6 +11,7 @@ bool IsMovableByStone(Particle particle, float random)
         case LAVA: return random < 0.21;
         case ACID: return random < 0.35;
         case METHANE: return random < 0.9;
+        case AMMONIA: return random < 0.9;
         default: return false;
     }
 }

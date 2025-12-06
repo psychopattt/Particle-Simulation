@@ -18,6 +18,7 @@
 #define RUST 17
 #define IRON 18
 #define METHANE 19
+#define AMMONIA 20
 
 struct Particle {
     int type;

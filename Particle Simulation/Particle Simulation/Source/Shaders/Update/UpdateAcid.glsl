@@ -17,6 +17,7 @@ bool IsDissolvableByAcid(Particle particle, float random)
         case RUST: return random < 0.01;
         case IRON: return random < 0.006;
         case METHANE: return random < 0.002;
+        case AMMONIA: return random < 0.008;
         default: return false;
     }
 }
@@ -32,6 +33,7 @@ bool IsMovableByAcid(Particle particle, float random)
         case STEAM: return true;
         case SEAWATER: return random < 0.28;
         case METHANE: return true;
+        case AMMONIA: return true;
         default: return false;
     }
 }

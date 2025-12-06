@@ -64,6 +64,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateRust.glsl"
 #include "UpdateIron.glsl"
 #include "UpdateMethane.glsl"
+#include "UpdateAmmonia.glsl"
 
 void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
@@ -85,6 +86,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Partic
     UpdateRust(upLeft, upRight, downLeft, downRight, randomA);
     UpdateIron(upLeft, upRight, downLeft, downRight, randomA, randomB);
     UpdateMethane(upLeft, upRight, downLeft, downRight, randomA, randomB);
+    UpdateAmmonia(upLeft, upRight, downLeft, downRight, randomA, randomB);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
