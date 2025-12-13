@@ -7,6 +7,7 @@ bool IsMovableByKerosene(Particle particle)
         case STEAM: return true;
         case METHANE: return true;
         case AMMONIA: return true;
+        case CHLORINE: return true;
         default: return false;
     }
 }

@@ -34,6 +34,7 @@ bool IsMovableByAcid(Particle particle, float random)
         case SEAWATER: return random < 0.28;
         case METHANE: return true;
         case AMMONIA: return true;
+        case CHLORINE: return true;
         default: return false;
     }
 }

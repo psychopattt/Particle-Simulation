@@ -12,6 +12,7 @@ bool IsMovableBySalt(Particle particle, float random)
         case ACID: return random < 0.21;
         case METHANE: return random < 0.88;
         case AMMONIA: return random < 0.88;
+        case CHLORINE: return random < 0.85;
         default: return false;
     }
 }

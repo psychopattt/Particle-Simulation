@@ -7,6 +7,7 @@ bool CanKillVine(Particle particle, float random)
         case SEAWATER: return random < 0.011;
         case SALT: return random < 0.015;
         case METHANE: return random < 0.0012;
+        case CHLORINE: return random < 0.008;
         default: return false;
     }
 }

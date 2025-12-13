@@ -37,6 +37,7 @@ vec3 GetParticleColor(Particle particle)
         case IRON: return particle.shade * 0.01 + vec3(0.31, 0.34, 0.39);
         case METHANE: return particle.shade * 0.02 + vec3(0.65, 0.77, 0.8);
         case AMMONIA: return particle.shade * 0.03 + vec3(0.73, 0.71, 0.66);
+        case CHLORINE: return particle.shade * 0.014 + vec3(0.54, 0.56, 0.1);
         default: return vec3(1, 0, 1);
     }
 }

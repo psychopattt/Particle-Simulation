@@ -13,6 +13,7 @@ bool IsMovableBySawdust(Particle particle, float random)
         case ACID: return random < 0.19;
         case METHANE: return random < 0.85;
         case AMMONIA: return random < 0.84;
+        case CHLORINE: return random < 0.74;
         default: return false;
     }
 }
