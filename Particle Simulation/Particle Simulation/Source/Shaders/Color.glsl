@@ -17,19 +17,19 @@ vec3 GetParticleColor(Particle particle)
     switch (particle.type)
     {
         case VOID: return voidColor;
-        case SAND: return vec3(0.82, 0.82, 0) + (particle.shade * 0.125);
-        case WATER: return vec3(0, 0, 0.8) + (particle.shade * 0.025);
-        case WALL: return vec3(0.293) + (particle.shade * 0.01);
-        case WOOD: return vec3(0.275, 0.157, 0) + (particle.shade * 0.02);
-        case SMOKE: return vec3(0.22) + (particle.shade * 0.2);
+        case SAND: return particle.shade * 0.125 + vec3(0.82, 0.82, 0);
+        case WATER: return vec3(0, 0, particle.shade * 0.025 + 0.8);
+        case WALL: return vec3(particle.shade * 0.01 + 0.293);
+        case WOOD: return particle.shade * 0.02 + vec3(0.275, 0.157, 0);
+        case SMOKE: return vec3(particle.shade * 0.2 + 0.22);
         case FIRE: return vec3(0.8, (particle.shade + 0.5) * 0.75, 0);
-        case STONE: return vec3(0.24) + (particle.shade * 0.025);
+        case STONE: return vec3(particle.shade * 0.025 + 0.24);
         case KEROSENE: return vec3(0.73, particle.shade * 0.015 + 0.6, 0.08);
-        case STEAM: return vec3(0.78) + (particle.shade * 0.03);
-        case SEAWATER: return vec3(0, 0.1, 0.7) + (particle.shade * 0.015);
+        case STEAM: return vec3(particle.shade * 0.03 + 0.78);
+        case SEAWATER: return particle.shade * 0.015 + vec3(0, 0.1, 0.7);
         case LAVA: return vec3(0.76, particle.shade * 0.05 + 0.33, 0);
         case ICE: return vec3(particle.shade * 0.34 + 0.17, 0.49, 0.7);
-        case SALT: return vec3(0.98, 0.97, 0.94) + (particle.shade * 0.04);
+        case SALT: return particle.shade * 0.04 + vec3(0.98, 0.97, 0.94);
         case SAWDUST: return particle.shade * vec3(0, 0.05, 0.1) + vec3(0.67, 0.54, 0.33);
         case ACID: return vec3(particle.shade * 0.3 + 0.25, 0.9, 0);
         case VINE: return vec3(0, particle.shade * 0.15 + 0.225, 0.1);
