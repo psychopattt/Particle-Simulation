@@ -8,23 +8,10 @@ bool CanIgniteChlorine(Particle particle, float random)
     }
 }
 
-bool IsMovableByChlorine(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.32;
-        case SMOKE: return random < 0.72;
-        case STEAM: return random < 0.9;
-        case METHANE: return random < 0.9;
-        case AMMONIA: return random < 0.9;
-        default: return false;
-    }
-}
-
 void IgniteChlorine(inout Particle particle)
 {
     if (particle.type == CHLORINE)
-        particle.type = FIRE;
+        particle = CreateParticle(FIRE, particle.shade);
 }
 
 void IgniteChlorine(inout Particle upLeft, inout Particle upRight,
@@ -43,8 +30,9 @@ void DissolveChlorine(inout Particle solvent, inout Particle solute1,
 {
     if (solvent.type == WATER && random < 0.05)
     {
-        solvent.type = SEAWATER;
-        solute1.type == CHLORINE ? solute1.type = VOID : solute2.type = VOID;
+        Particle air = CreateParticle(VOID, 0);
+        solute1.type == CHLORINE ? solute1 = air : solute2 = air;
+        solvent = CreateParticle(SEAWATER, solvent.shade);
     }
 }
 
@@ -70,8 +58,8 @@ void DissolveChlorine(inout Particle upLeft, inout Particle upRight,
 
 void MoveChlorineLaterally(inout Particle left, inout Particle right, float random)
 {
-    if ((left.type == CHLORINE && IsMovableByChlorine(right, random)) ||
-        (right.type == CHLORINE && IsMovableByChlorine(left, random)))
+    if ((left.type == CHLORINE && CanMoveParticle(left, right, random)) ||
+        (right.type == CHLORINE && CanMoveParticle(right, left, random)))
     {
         SwapParticles(left, right);
     }
@@ -89,9 +77,9 @@ void MoveChlorineDown(inout Particle moving, inout Particle bottom,
 {
     if (moving.type == CHLORINE)
     {
-        if (IsMovableByChlorine(bottom, random))
+        if (CanMoveParticle(moving, bottom, random))
             SwapParticles(moving, bottom);
-        else if (IsMovableByChlorine(diagonal, random))
+        else if (CanMoveParticle(moving, diagonal, random))
             SwapParticles(moving, diagonal);
     }
 }
