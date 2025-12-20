@@ -15,7 +15,7 @@ bool RustIron(inout Particle particle, float probability, float random)
     bool rusted = particle.type == IRON && random < probability;
 
     if (rusted)
-        particle.type = RUST;
+        particle = CreateParticle(RUST, particle.shade);
 
     return rusted;
 }
