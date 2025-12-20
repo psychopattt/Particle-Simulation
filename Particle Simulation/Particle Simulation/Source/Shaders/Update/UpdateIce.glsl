@@ -17,7 +17,7 @@ bool CanMeltIce(Particle particle, float random)
 void FreezeParticleIntoIce(inout Particle particle, float random)
 {
     if (IsFreezableByIce(particle, random))
-        particle.type = ICE;
+        particle = CreateParticle(ICE, particle.shade);
 }
 
 void FreezeParticlesIntoIce(inout Particle upLeft, inout Particle upRight,
@@ -43,7 +43,7 @@ void FreezeParticlesIntoIce(inout Particle upLeft, inout Particle upRight,
 void MeltIce(inout Particle particle)
 {
     if (particle.type == ICE)
-        particle.type = WATER;
+        particle = CreateParticle(WATER, particle.shade);
 }
 
 void MeltIce(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
