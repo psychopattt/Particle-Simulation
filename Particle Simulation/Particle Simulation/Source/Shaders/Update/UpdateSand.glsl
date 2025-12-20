@@ -7,8 +7,8 @@ void UpdateSandSide(inout Particle moving, Particle side,
         {
             SwapParticles(moving, bottom);
         }
-        else if (CanMoveParticle(moving, side, diagonalRandom) &&
-            CanMoveParticle(moving, diagonal, diagonalRandom))
+        else if (CanMoveParticle(moving, side, random) &&
+            CanMoveParticle(moving, diagonal, random))
         {
             SwapParticles(moving, diagonal);
         }
