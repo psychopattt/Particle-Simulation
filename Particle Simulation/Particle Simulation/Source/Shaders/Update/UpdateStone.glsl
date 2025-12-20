@@ -1,22 +1,3 @@
-bool IsMovableByStone(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.9;
-        case WATER: return random < 0.63;
-        case SMOKE: return random < 0.9;
-        case KEROSENE: return random < 0.72;
-        case STEAM: return random < 0.9;
-        case SEAWATER: return random < 0.63;
-        case LAVA: return random < 0.21;
-        case ACID: return random < 0.35;
-        case METHANE: return random < 0.9;
-        case AMMONIA: return random < 0.9;
-        case CHLORINE: return random < 0.9;
-        default: return false;
-    }
-}
-
 void UpdateStoneSide(inout Particle moving, Particle side,
     inout Particle bottom, inout Particle diagonal, float random)
 {
@@ -24,12 +5,12 @@ void UpdateStoneSide(inout Particle moving, Particle side,
 
     if (moving.type == STONE)
     {
-        if (IsMovableByStone(bottom, random))
+        if (CanMoveParticle(moving, bottom, random))
         {
             SwapParticles(moving, bottom);
         }
-        else if (IsMovableByStone(side, diagonalRandom) &&
-            IsMovableByStone(diagonal, diagonalRandom))
+        else if (CanMoveParticle(moving, side, diagonalRandom) &&
+            CanMoveParticle(moving, diagonal, diagonalRandom))
         {
             SwapParticles(moving, diagonal);
         }
