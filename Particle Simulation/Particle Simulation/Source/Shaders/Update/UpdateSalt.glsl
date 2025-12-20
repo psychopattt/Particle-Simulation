@@ -1,29 +1,11 @@
-bool IsMovableBySalt(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.9;
-        case WATER: return random < 0.39;
-        case SMOKE: return random < 0.86;
-        case KEROSENE: return random < 0.47;
-        case STEAM: return random < 0.9;
-        case SEAWATER: return random < 0.38;
-        case LAVA: return random < 0.125;
-        case ACID: return random < 0.21;
-        case METHANE: return random < 0.88;
-        case AMMONIA: return random < 0.88;
-        case CHLORINE: return random < 0.85;
-        default: return false;
-    }
-}
-
 void DissolveSalt(inout Particle solvent, inout Particle solute1,
     inout Particle solute2, float random)
 {
     if (solvent.type == WATER && random < 0.04)
     {
-        solvent.type = SEAWATER;
-        solute1.type == SALT ? solute1.type = VOID : solute2.type = VOID;
+        Particle air = CreateParticle(VOID, 0);
+        solute1.type == SALT ? solute1 = air : solute2 = air;
+        solvent = CreateParticle(SEAWATER, solvent.shade);
     }
 }
 
@@ -47,24 +29,28 @@ void DissolveSalt(inout Particle upLeft, inout Particle upRight,
     }
 }
 
+void MoveSaltSide(inout Particle moving, Particle side,
+    inout Particle bottom, inout Particle diagonal, float random)
+{
+    if (moving.type == SALT)
+    {
+        if (CanMoveParticle(moving, bottom, random))
+        {
+            SwapParticles(moving, bottom);
+        }
+        else if (CanMoveParticle(moving, side, random) &&
+            CanMoveParticle(moving, diagonal, random))
+        {
+            SwapParticles(moving, diagonal);
+        }
+    }
+}
+
 void MoveSalt(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    if (upLeft.type == SALT)
-    {
-        if (IsMovableBySalt(downLeft, random))
-            SwapParticles(upLeft, downLeft);
-        else if (IsMovableBySalt(upRight, random) && IsMovableBySalt(downRight, random))
-            SwapParticles(upLeft, downRight);
-    }
-
-    if (upRight.type == SALT)
-    {
-        if (IsMovableBySalt(downRight, random))
-            SwapParticles(upRight, downRight);
-        else if (IsMovableBySalt(upLeft, random) && IsMovableBySalt(downLeft, random))
-            SwapParticles(upRight, downLeft);
-    }
+    MoveSaltSide(upLeft, upRight, downLeft, downRight, random);
+    MoveSaltSide(upRight, upLeft, downRight, downLeft, random);
 }
 
 void UpdateSalt(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
