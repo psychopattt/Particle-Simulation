@@ -41,6 +41,17 @@ Particle GetParticle(ivec2 position)
         CreateParticle(WALL, 0) : InputParticles[GetPositionId(position)];
 }
 
+bool CanMoveParticle(Particle origin, Particle target, float random)
+{
+    float densityDelta = origin.density - target.density;
+    float moveProbability = min(0.9, densityDelta / origin.density);
+    bool phasesCompatible = target.phase != PHASE_STATIC && (
+        target.phase > PHASE_SOLID || origin.phase != PHASE_SOLID
+    );
+
+    return phasesCompatible && random < moveProbability;
+}
+
 void SwapParticles(inout Particle particle1, inout Particle particle2)
 {
     Particle temp = particle1;
