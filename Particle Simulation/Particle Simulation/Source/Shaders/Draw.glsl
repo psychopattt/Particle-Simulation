@@ -2,7 +2,7 @@
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
-#include "Particles.glsl"
+#include "Particle.glsl"
 
 uniform ivec2 size;
 uniform uint frame;
@@ -18,6 +18,7 @@ layout(std430) restrict buffer particlesBuffer {
     Particle Particles[];
 };
 
+#include "Particles.glsl"
 #include "Hash.glsl"
 
 float LineDistance(vec2 lineStart, vec2 lineEnd, vec2 point)
@@ -44,6 +45,6 @@ void main()
     if (distance < drawRadius && writeable)
     {
         vec2 shadeSeed = distance * 1.1031 + position;
-        Particles[id] = Particle(drawType, HashVec2(shadeSeed) - 0.5);
+        Particles[id] = CreateParticle(drawType, HashVec2(shadeSeed) - 0.5);
     }
 }

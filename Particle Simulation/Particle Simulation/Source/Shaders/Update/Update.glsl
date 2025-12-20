@@ -2,7 +2,7 @@
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
-#include "Particles.glsl"
+#include "Particle.glsl"
 
 uniform ivec2 size;
 uniform uint frame;
@@ -16,6 +16,7 @@ layout(std430) restrict writeonly buffer outputParticles {
     Particle OutputParticles[];
 };
 
+#include "Particles.glsl"
 #include "Hash.glsl"
 
 ivec2 GetMargolusOffset()
@@ -37,7 +38,7 @@ uint GetPositionId(ivec2 position)
 Particle GetParticle(ivec2 position)
 {
     return (position.x < 0 || position.x >= size.x || position.y < 0 || position.y >= size.y) ?
-        Particle(WALL, 0) : InputParticles[GetPositionId(position)];
+        CreateParticle(WALL, 0) : InputParticles[GetPositionId(position)];
 }
 
 void SwapParticles(inout Particle particle1, inout Particle particle2)
