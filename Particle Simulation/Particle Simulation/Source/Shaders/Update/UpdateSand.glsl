@@ -1,4 +1,4 @@
-void UpdateSandSide(inout Particle moving, Particle side,
+void MoveSandSide(inout Particle moving, Particle side,
     inout Particle bottom, inout Particle diagonal, float random)
 {
     if (moving.type == SAND)
@@ -18,6 +18,6 @@ void UpdateSandSide(inout Particle moving, Particle side,
 void UpdateSand(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    UpdateSandSide(upLeft, upRight, downLeft, downRight, random);
-    UpdateSandSide(upRight, upLeft, downRight, downLeft, random);
+    MoveSandSide(upLeft, upRight, downLeft, downRight, random);
+    MoveSandSide(upRight, upLeft, downRight, downLeft, random);
 }

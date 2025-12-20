@@ -1,4 +1,4 @@
-void UpdateRustSide(inout Particle moving, Particle side,
+void MoveRustSide(inout Particle moving, Particle side,
     inout Particle bottom, inout Particle diagonal, float random)
 {
     if (moving.type == RUST)
@@ -18,6 +18,6 @@ void UpdateRustSide(inout Particle moving, Particle side,
 void UpdateRust(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    UpdateRustSide(upLeft, upRight, downLeft, downRight, random);
-    UpdateRustSide(upRight, upLeft, downRight, downLeft, random);
+    MoveRustSide(upLeft, upRight, downLeft, downRight, random);
+    MoveRustSide(upRight, upLeft, downRight, downLeft, random);
 }
