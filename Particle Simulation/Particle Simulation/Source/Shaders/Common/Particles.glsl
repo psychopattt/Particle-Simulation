@@ -65,8 +65,8 @@ float GetParticleDensity(int type)
         case WATER: return 999.84;
         case WALL: return 10000;
         case WOOD: return 685;
-        case SMOKE: return 2.15;
-        case FIRE: return 100;
+        case SMOKE: return 0.81;
+        case FIRE: return 1.62;
         case STONE: return 2600;
         case KEROSENE: return 795;
         case STEAM: return 0.59;

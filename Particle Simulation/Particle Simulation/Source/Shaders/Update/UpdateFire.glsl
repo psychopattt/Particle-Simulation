@@ -32,20 +32,10 @@ bool CanQuenchFire(Particle particle, float random)
     }
 }
 
-bool IsMovableByFire(Particle particle)
-{
-    switch (particle.type)
-    {
-        case VOID: return true;
-        case SMOKE: return true;
-        default: return false;
-    }
-}
-
 void SpreadFire(inout Particle particle, float random)
 {
     if (CanCatchFire(particle, random))
-        particle.type = FIRE;
+        particle = CreateParticle(FIRE, particle.shade);
 }
 
 void SpreadFire(inout Particle upLeft, inout Particle upRight,
@@ -64,7 +54,7 @@ void SpreadFire(inout Particle upLeft, inout Particle upRight,
 void QuenchFire(inout Particle particle, float random)
 {
     if (particle.type == FIRE)
-        particle.type = random < 0.3 ? SMOKE : VOID;
+        particle = CreateParticle(random < 0.3 ? SMOKE : VOID, particle.shade);
 }
 
 void QuenchFireByParticle(inout Particle upLeft, inout Particle upRight,
@@ -101,8 +91,8 @@ void QuenchFireByFlammability(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void QuenchFire(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomC)
+void QuenchFire(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
 {
     QuenchFireByParticle(upLeft, upRight, downLeft, downRight, randomC);
     QuenchFireByFlammability(upLeft, upRight, downLeft, downRight, randomA, randomC);
@@ -126,68 +116,46 @@ void UpdateFireShade(inout Particle upLeft, inout Particle upRight,
     }
 }
 
+void MoveFireLayerLaterally(inout Particle side1, inout Particle side2, float random)
+{
+    if ((side1.type == FIRE && CanMoveParticle(side1, side2, random)) ||
+        (side2.type == FIRE && CanMoveParticle(side2, side1, random)))
+    {
+        SwapParticles(side1, side2);
+    }
+}
+
 void MoveFireLaterally(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    if (random < 0.1)
-    {
-        if ((upLeft.type == FIRE && IsMovableByFire(upRight)) ||
-            (upRight.type == FIRE && IsMovableByFire(upLeft)))
-        {
-            SwapParticles(upLeft, upRight);
-        }
+    MoveFireLayerLaterally(upLeft, upRight, random);
+    MoveFireLayerLaterally(downLeft, downRight, random);
+}
 
-        if ((downLeft.type == FIRE && IsMovableByFire(downRight)) ||
-            (downRight.type == FIRE && IsMovableByFire(downLeft)))
-        {
-            SwapParticles(downLeft, downRight);
-        }
+void MoveFireSideVertically(inout Particle origin, inout Particle mainTarget,
+    inout Particle secondaryTarget, float random)
+{
+    if (origin.type == FIRE)
+    {
+        if (CanMoveParticle(origin, mainTarget, random))
+            SwapParticles(origin, mainTarget);
+        else if (CanMoveParticle(origin, secondaryTarget, random))
+            SwapParticles(origin, secondaryTarget);
     }
 }
 
-void MoveFireDown(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float random)
+void MoveFireVertically(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, float randomB, float randomC)
 {
-    if (random < 0.2)
+    if (randomB < 0.5)
     {
-        if (upLeft.type == FIRE)
-        {
-            if (IsMovableByFire(downLeft))
-                SwapParticles(upLeft, downLeft);
-            else if (IsMovableByFire(downRight))
-                SwapParticles(upLeft, downRight);
-        }
-
-        if (upRight.type == FIRE)
-        {
-            if (IsMovableByFire(downRight))
-                SwapParticles(upRight, downRight);
-            else if (IsMovableByFire(downLeft))
-                SwapParticles(upRight, downLeft);
-        }
+        MoveFireSideVertically(upLeft, downLeft, downRight, randomC);
+        MoveFireSideVertically(upRight, downRight, downLeft, randomC);
     }
-}
-
-void MoveFireUp(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float random)
-{
-    if (random < 0.2)
+    else
     {
-        if (downLeft.type == FIRE)
-        {
-            if (IsMovableByFire(upLeft))
-                SwapParticles(downLeft, upLeft);
-            else if (IsMovableByFire(upRight))
-                SwapParticles(downLeft, upRight);
-        }
-
-        if (downRight.type == FIRE)
-        {
-            if (IsMovableByFire(upRight))
-                SwapParticles(downRight, upRight);
-            else if (IsMovableByFire(upLeft))
-                SwapParticles(downRight, upLeft);
-        }
+        MoveFireSideVertically(downLeft, upLeft, upRight, randomC);
+        MoveFireSideVertically(downRight, upRight, upLeft, randomC);
     }
 }
 
@@ -198,9 +166,5 @@ void UpdateFire(inout Particle upLeft, inout Particle upRight, inout Particle do
     QuenchFire(upLeft, upRight, downLeft, downRight, randomA, randomC);
     UpdateFireShade(upLeft, upRight, downLeft, downRight, randomA);
     MoveFireLaterally(upLeft, upRight, downLeft, downRight, randomB);
-
-    if (randomB < 0.5)
-        MoveFireDown(upLeft, upRight, downLeft, downRight, randomC);
-    else
-        MoveFireUp(upLeft, upRight, downLeft, downRight, randomC);
+    MoveFireVertically(upLeft, upRight, downLeft, downRight, randomB, randomC);
 }
