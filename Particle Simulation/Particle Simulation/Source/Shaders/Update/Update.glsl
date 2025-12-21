@@ -45,11 +45,10 @@ bool CanMoveParticle(Particle origin, Particle target, float random)
 {
     float densityDelta = origin.density - target.density;
     float moveProbability = min(0.9, densityDelta / origin.density);
-    bool phasesCompatible = target.phase != PHASE_STATIC && (
-        target.phase > PHASE_SOLID || origin.phase != PHASE_SOLID
-    );
+    bool immovable = origin.phase == PHASE_STATIC || target.phase == PHASE_STATIC;
+    bool mixable = origin.phase > PHASE_SOLID || target.phase > PHASE_SOLID;
 
-    return phasesCompatible && random < moveProbability;
+    return !immovable && mixable && random < moveProbability;
 }
 
 void SwapParticles(inout Particle particle1, inout Particle particle2)
