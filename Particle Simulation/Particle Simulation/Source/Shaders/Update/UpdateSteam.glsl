@@ -1,21 +1,9 @@
-bool IsMovableBySteam(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.74;
-        case SMOKE: return random < 0.3;
-        case METHANE: return random < 0.18;
-        case AMMONIA: return random < 0.19;
-        default: return false;
-    }
-}
-
 void DissipateSteam(inout Particle particle, float random)
 {
     if (particle.type == STEAM)
     {
         if (particle.shade < -0.75)
-            particle = Particle(random < 0.3 ? WATER : VOID, 0.1);
+            particle = CreateParticle(random < 0.3 ? WATER : VOID, 0.1);
         else
             particle.shade -= 0.04;
     }
@@ -32,8 +20,8 @@ void DissipateSteam(inout Particle upLeft, inout Particle upRight, float randomB
 
 void MoveSteamLaterally(inout Particle left, inout Particle right, float random)
 {
-    if ((left.type == STEAM && IsMovableBySteam(right, random)) ||
-        (right.type == STEAM && IsMovableBySteam(left, random)))
+    if ((left.type == STEAM && CanMoveParticle(right, left, random)) ||
+        (right.type == STEAM && CanMoveParticle(left, right, random)))
     {
         SwapParticles(left, right);
     }
@@ -51,9 +39,9 @@ void MoveSteamUp(inout Particle moving, inout Particle top,
 {
     if (moving.type == STEAM)
     {
-        if (IsMovableBySteam(top, random))
+        if (CanMoveParticle(top, moving, random))
             SwapParticles(moving, top);
-        else if (IsMovableBySteam(diagonal, random))
+        else if (CanMoveParticle(diagonal, moving, random))
             SwapParticles(moving, diagonal);
     }
 }
