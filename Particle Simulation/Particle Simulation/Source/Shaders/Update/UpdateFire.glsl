@@ -116,32 +116,38 @@ void UpdateFireShade(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveFireLayerLaterally(inout Particle side1, inout Particle side2, float random)
+bool TryMoveFire(inout Particle origin, inout Particle target, float random)
 {
-    if ((side1.type == FIRE && CanMoveParticle(side1, side2, random)) ||
-        (side2.type == FIRE && CanMoveParticle(side2, side1, random)))
+    if (origin.type == FIRE)
     {
-        SwapParticles(side1, side2);
+        origin.phase = PHASE_SOLID;
+        bool movable = CanMoveParticle(origin, target, random);
+        origin.phase = PHASE_STATIC;
+
+        if (movable)
+            SwapParticles(origin, target);
+
+        return movable;
     }
+
+    return false;
 }
 
 void MoveFireLaterally(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    MoveFireLayerLaterally(upLeft, upRight, random);
-    MoveFireLayerLaterally(downLeft, downRight, random);
+    TryMoveFire(upLeft, upRight, random) ||
+        TryMoveFire(upRight, upLeft, random);
+
+    TryMoveFire(downLeft, downRight, random) ||
+        TryMoveFire(downRight, downLeft, random);
 }
 
 void MoveFireSideVertically(inout Particle origin, inout Particle mainTarget,
     inout Particle secondaryTarget, float random)
 {
-    if (origin.type == FIRE)
-    {
-        if (CanMoveParticle(origin, mainTarget, random))
-            SwapParticles(origin, mainTarget);
-        else if (CanMoveParticle(origin, secondaryTarget, random))
-            SwapParticles(origin, secondaryTarget);
-    }
+    TryMoveFire(origin, mainTarget, random) ||
+        TryMoveFire(origin, secondaryTarget, random);
 }
 
 void MoveFireVertically(inout Particle upLeft, inout Particle upRight,

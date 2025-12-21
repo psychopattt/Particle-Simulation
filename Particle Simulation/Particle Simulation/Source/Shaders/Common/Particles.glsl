@@ -36,7 +36,7 @@ int GetParticlePhase(int type)
         case WALL: return PHASE_STATIC;
         case WOOD: return PHASE_STATIC;
         case SMOKE: return PHASE_GAS;
-        case FIRE: return PHASE_SOLID;
+        case FIRE: return PHASE_STATIC;
         case STONE: return PHASE_SOLID;
         case KEROSENE: return PHASE_LIQUID;
         case STEAM: return PHASE_GAS;
