@@ -30,7 +30,7 @@ void DissolveChlorine(inout Particle solvent, inout Particle solute1,
 {
     if (solvent.type == WATER && random < 0.05)
     {
-        Particle air = CreateParticle(VOID, 0);
+        Particle air = CreateParticle(AIR, 0);
         solute1.type == CHLORINE ? solute1 = air : solute2 = air;
         solvent = CreateParticle(SEAWATER, solvent.shade);
     }

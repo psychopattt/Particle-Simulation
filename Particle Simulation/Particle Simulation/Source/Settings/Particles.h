@@ -10,7 +10,7 @@ struct Particle
 
 enum class ParticleType : int
 {
-	Void,
+	Air,
 	Sand,
 	Water,
 	Wall,

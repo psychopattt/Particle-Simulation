@@ -40,7 +40,7 @@ void main()
 
     uint id = position.y * size.x + position.x;
     float distance = LineDistance(lastPosition, currentPosition, position);
-    bool writeable = overwrite || drawType == VOID || Particles[id].type == VOID;
+    bool writeable = overwrite || drawType == AIR || Particles[id].type == AIR;
 
     if (distance < drawRadius && writeable)
     {

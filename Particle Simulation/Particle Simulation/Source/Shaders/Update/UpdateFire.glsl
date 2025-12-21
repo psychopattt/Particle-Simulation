@@ -54,7 +54,7 @@ void SpreadFire(inout Particle upLeft, inout Particle upRight,
 void QuenchFire(inout Particle particle, float random)
 {
     if (particle.type == FIRE)
-        particle = CreateParticle(random < 0.3 ? SMOKE : VOID, particle.shade);
+        particle = CreateParticle(random < 0.3 ? SMOKE : AIR, particle.shade);
 }
 
 void QuenchFireByParticle(inout Particle upLeft, inout Particle upRight,

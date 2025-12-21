@@ -3,7 +3,7 @@ void DissolveSalt(inout Particle solvent, inout Particle solute1,
 {
     if (solvent.type == WATER && random < 0.04)
     {
-        Particle air = CreateParticle(VOID, 0);
+        Particle air = CreateParticle(AIR, 0);
         solute1.type == SALT ? solute1 = air : solute2 = air;
         solvent = CreateParticle(SEAWATER, solvent.shade);
     }

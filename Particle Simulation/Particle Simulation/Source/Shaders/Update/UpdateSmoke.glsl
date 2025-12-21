@@ -3,7 +3,7 @@ void DissipateSmoke(inout Particle particle)
     if (particle.type == SMOKE)
     {
         if (particle.shade < -0.6)
-            particle = CreateParticle(VOID, 0);
+            particle = CreateParticle(AIR, 0);
         else
             particle.shade -= 0.01;
     }

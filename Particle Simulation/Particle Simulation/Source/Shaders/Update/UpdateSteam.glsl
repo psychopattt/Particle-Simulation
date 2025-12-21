@@ -3,7 +3,7 @@ void DissipateSteam(inout Particle particle, float random)
     if (particle.type == STEAM)
     {
         if (particle.shade < -0.75)
-            particle = CreateParticle(random < 0.3 ? WATER : VOID, 0.1);
+            particle = CreateParticle(random < 0.3 ? WATER : AIR, 0.1);
         else
             particle.shade -= 0.04;
     }

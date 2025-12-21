@@ -1,4 +1,4 @@
-#define VOID 0
+#define AIR 0
 #define SAND 1
 #define WATER 2
 #define WALL 3
@@ -30,7 +30,7 @@ int GetParticlePhase(int type)
 {
     switch (type)
     {
-        case VOID: return PHASE_GAS;
+        case AIR: return PHASE_GAS;
         case SAND: return PHASE_SOLID;
         case WATER: return PHASE_LIQUID;
         case WALL: return PHASE_STATIC;
@@ -60,7 +60,7 @@ float GetParticleDensity(int type)
 {
     switch (type)
     {
-        case VOID: return 1.292;
+        case AIR: return 1.292;
         case SAND: return 1602;
         case WATER: return 999.84;
         case WALL: return 10000;

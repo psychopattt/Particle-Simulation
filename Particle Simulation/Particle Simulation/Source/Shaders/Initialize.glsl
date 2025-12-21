@@ -20,5 +20,5 @@ void main()
 		return;
 
     uint id = position.y * size.x + position.x;
-    Particles[id] = CreateParticle(VOID, 0);
+    Particles[id] = CreateParticle(AIR, 0);
 }

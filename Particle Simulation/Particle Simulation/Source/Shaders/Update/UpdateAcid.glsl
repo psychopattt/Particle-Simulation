@@ -26,7 +26,7 @@ void DissolveParticleByAcid(inout Particle particle, float random)
 {
     if (IsDissolvableByAcid(particle, random))
     {
-        int newType = IsDissolvableByAcid(particle, random * 8) ? SMOKE : VOID;
+        int newType = IsDissolvableByAcid(particle, random * 8) ? SMOKE : AIR;
         particle = CreateParticle(newType, particle.shade);
     }
 }
@@ -57,7 +57,7 @@ bool NeutralizeAcid(inout Particle particle, float probability, float random)
 
     if (neutralized)
     {
-        int newType = particle.shade > 0.44 ? SMOKE : VOID;
+        int newType = particle.shade > 0.44 ? SMOKE : AIR;
         particle = CreateParticle(newType, particle.shade);
     }
 

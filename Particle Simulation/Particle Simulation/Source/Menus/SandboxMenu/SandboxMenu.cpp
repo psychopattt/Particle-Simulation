@@ -32,7 +32,7 @@ void SandboxMenu::Render()
 		SliderFloat("##sliderDrawRadius", &DrawSettings::DrawRadius, 1, 50, "%.1f");
 
 		SeparatorText("Background Color");
-		ColorEdit3("##editVoidColor", DrawSettings::VoidColor);
+		ColorEdit3("##editAirColor", DrawSettings::AirColor);
 
 		PopItemWidth();
 	}
