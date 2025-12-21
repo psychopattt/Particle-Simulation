@@ -1,17 +1,7 @@
-bool IsMovableByAmmonia(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.58;
-        case SMOKE: return random < 0.23;
-        default: return false;
-    }
-}
-
 void MoveAmmoniaLaterally(inout Particle left, inout Particle right, float random)
 {
-    if ((left.type == AMMONIA && IsMovableByAmmonia(right, random)) ||
-        (right.type == AMMONIA && IsMovableByAmmonia(left, random)))
+    if ((left.type == AMMONIA && CanMoveParticle(right, left, random)) ||
+        (right.type == AMMONIA && CanMoveParticle(left, right, random)))
     {
         SwapParticles(left, right);
     }
@@ -29,9 +19,9 @@ void MoveAmmoniaUp(inout Particle moving, inout Particle top,
 {
     if (moving.type == AMMONIA)
     {
-        if (IsMovableByAmmonia(top, random))
+        if (CanMoveParticle(top, moving, random))
             SwapParticles(moving, top);
-        else if (IsMovableByAmmonia(diagonal, random))
+        else if (CanMoveParticle(diagonal, moving, random))
             SwapParticles(moving, diagonal);
     }
 }
