@@ -14,10 +14,10 @@ bool CanCatchFire(Particle particle, float random)
     {
         case WOOD: return random < 0.07;
         case KEROSENE: return random < 0.18;
-        case SAWDUST: return random < 0.11;
+        case SAWDUST: return random < 0.13;
         case VINE: return random < 0.1;
         case METHANE: return random < 0.38;
-        case AMMONIA: return random < 0.008;
+        case AMMONIA: return random < 0.003;
         default: return false;
     }
 }
