@@ -7,7 +7,7 @@ namespace DrawSettings
 	inline bool DrawMode = true;
 	inline bool Drawing = false;
 	inline bool Overwrite = false;
-	inline float VoidColor[3] = { 0, 0, 0 };
+	inline float AirColor[3] = { 0, 0, 0 };
 	inline float DrawRadius = 2.5f;
 	inline int DrawType = 0;
 
@@ -25,7 +25,7 @@ namespace DrawSettings
 
 	inline int SelectedParticles[MaxMouseButtonCount] = {
 		static_cast<int>(ParticleType::Sand),
-		static_cast<int>(ParticleType::Void),
+		static_cast<int>(ParticleType::Air),
 		-1, -1, -1, -1, -1, -1
 	};
 }

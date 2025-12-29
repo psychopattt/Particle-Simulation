@@ -3,12 +3,14 @@
 struct Particle
 {
 	int type;
+	int phase;
+	float density;
 	float shade;
 };
 
 enum class ParticleType : int
 {
-	Void,
+	Air,
 	Sand,
 	Water,
 	Wall,

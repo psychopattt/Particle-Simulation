@@ -2,13 +2,15 @@
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
-#include "Particles.glsl"
+#include "Particle.glsl"
 
 uniform ivec2 size;
 
 layout(std430) restrict writeonly buffer particlesBuffer {
     Particle Particles[];
 };
+
+#include "Particles.glsl"
 
 void main()
 {
@@ -18,5 +20,5 @@ void main()
 		return;
 
     uint id = position.y * size.x + position.x;
-    Particles[id] = Particle(VOID, 0);
+    Particles[id] = CreateParticle(AIR, 0);
 }

@@ -22,27 +22,13 @@ bool IsDissolvableByAcid(Particle particle, float random)
     }
 }
 
-bool IsMovableByAcid(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return true;
-        case WATER: return random < 0.285;
-        case SMOKE: return true;
-        case KEROSENE: return random < 0.55;
-        case STEAM: return true;
-        case SEAWATER: return random < 0.28;
-        case METHANE: return true;
-        case AMMONIA: return true;
-        case CHLORINE: return true;
-        default: return false;
-    }
-}
-
 void DissolveParticleByAcid(inout Particle particle, float random)
 {
     if (IsDissolvableByAcid(particle, random))
-        particle.type = IsDissolvableByAcid(particle, random * 8) ? SMOKE : VOID;
+    {
+        int newType = IsDissolvableByAcid(particle, random * 8) ? SMOKE : AIR;
+        particle = CreateParticle(newType, particle.shade);
+    }
 }
 
 void DissolveParticlesByAcid(inout Particle upLeft, inout Particle upRight,
@@ -70,7 +56,10 @@ bool NeutralizeAcid(inout Particle particle, float probability, float random)
     bool neutralized = particle.type == ACID && random < probability;
 
     if (neutralized)
-        particle.type = particle.shade > 0.44 ? SMOKE : VOID;
+    {
+        int newType = particle.shade > 0.44 ? SMOKE : AIR;
+        particle = CreateParticle(newType, particle.shade);
+    }
 
     return neutralized;
 }
@@ -97,49 +86,44 @@ void NeutralizeAcid(inout Particle upLeft, inout Particle upRight,
     neutralized = neutralized || NeutralizeAcid(downRight, probability, random);
 }
 
+void MoveAcidSideDown(inout Particle moving, Particle side, inout Particle bottom,
+    inout Particle diagonal, float random, inout bool fell)
+{
+    if (moving.type == ACID)
+    {
+        if (CanMoveParticle(moving, bottom, random))
+        {
+            fell = true;
+            SwapParticles(moving, bottom);
+        }
+        else if (CanMoveParticle(moving, side, random) &&
+            CanMoveParticle(moving, diagonal, random))
+        {
+            SwapParticles(moving, diagonal);
+        }
+    }
+}
+
 void MoveAcidDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
 {
-    if (upLeft.type == ACID)
-    {
-        if (IsMovableByAcid(downLeft, random) && random < 0.9)
-        {
-            leftFell = true;
-            SwapParticles(upLeft, downLeft);
-        }
-        else if (IsMovableByAcid(upRight, random) && IsMovableByAcid(downRight, random))
-        {
-            SwapParticles(upLeft, downRight);
-        }
-    }
-
-    if (upRight.type == ACID)
-    {
-        if (IsMovableByAcid(downRight, random) && random < 0.9)
-        {
-            rightFell = true;
-            SwapParticles(upRight, downRight);
-        }
-        else if (IsMovableByAcid(upLeft, random) && IsMovableByAcid(downLeft, random))
-        {
-            SwapParticles(upRight, downLeft);
-        }
-    }
+    MoveAcidSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
+    MoveAcidSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
 }
 
 void MoveAcidLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float random, bool leftFell, bool rightFell)
 {
     if (random < 0.8 &&
-        ((upLeft.type == ACID && IsMovableByAcid(upRight, random) && !leftFell) ||
-        (upRight.type == ACID && IsMovableByAcid(upLeft, random) && !rightFell)))
+        ((upLeft.type == ACID && CanMoveParticle(upLeft, upRight, random) && !leftFell) ||
+        (upRight.type == ACID && CanMoveParticle(upRight, upLeft, random) && !rightFell)))
     {
         SwapParticles(upLeft, upRight);
     }
 
     if (random < 0.5 &&
-        ((downLeft.type == ACID && IsMovableByAcid(downRight, random) && !leftFell) ||
-        (downRight.type == ACID && IsMovableByAcid(downLeft, random) && !rightFell)))
+        ((downLeft.type == ACID && CanMoveParticle(downLeft, downRight, random) && !leftFell) ||
+        (downRight.type == ACID && CanMoveParticle(downRight, downLeft, random) && !rightFell)))
     {
         SwapParticles(downLeft, downRight);
     }

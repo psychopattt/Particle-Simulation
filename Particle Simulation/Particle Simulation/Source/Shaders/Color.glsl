@@ -2,21 +2,23 @@
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 
-#include "Particles.glsl"
+#include "Particle.glsl"
 
 uniform ivec2 size;
-uniform vec3 voidColor;
+uniform vec3 airColor;
 
 layout(rgba32f) restrict writeonly uniform image2D texture;
 layout(std430) restrict readonly buffer particlesBuffer {
     Particle Particles[];
 };
 
+#include "Particles.glsl"
+
 vec3 GetParticleColor(Particle particle)
 {
     switch (particle.type)
     {
-        case VOID: return voidColor;
+        case AIR: return airColor;
         case SAND: return particle.shade * 0.125 + vec3(0.82, 0.82, 0);
         case WATER: return vec3(0, 0, particle.shade * 0.025 + 0.8);
         case WALL: return vec3(particle.shade * 0.01 + 0.293);

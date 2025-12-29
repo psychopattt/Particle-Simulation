@@ -1,60 +1,41 @@
-bool IsMovableByKerosene(Particle particle)
+void MoveKeroseneSideDown(inout Particle moving, Particle side,
+    inout Particle bottom, inout Particle diagonal, float random, inout bool fell)
 {
-    switch (particle.type)
+    if (moving.type == KEROSENE)
     {
-        case VOID: return true;
-        case SMOKE: return true;
-        case STEAM: return true;
-        case METHANE: return true;
-        case AMMONIA: return true;
-        case CHLORINE: return true;
-        default: return false;
+        if (CanMoveParticle(moving, bottom, random))
+        {
+            fell = true;
+            SwapParticles(moving, bottom);
+        }
+        else if (CanMoveParticle(moving, side, random) &&
+            CanMoveParticle(moving, diagonal, random))
+        {
+            SwapParticles(moving, diagonal);
+        }
     }
 }
 
 void MoveKeroseneDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
 {
-    if (upLeft.type == KEROSENE)
-    {
-        if (IsMovableByKerosene(downLeft) && random < 0.9)
-        {
-            leftFell = true;
-            SwapParticles(upLeft, downLeft);
-        }
-        else if (IsMovableByKerosene(upRight) && IsMovableByKerosene(downRight))
-        {
-            SwapParticles(upLeft, downRight);
-        }
-    }
-
-    if (upRight.type == KEROSENE)
-    {
-        if (IsMovableByKerosene(downRight) && random < 0.9)
-        {
-            rightFell = true;
-            SwapParticles(upRight, downRight);
-        }
-        else if (IsMovableByKerosene(upLeft) && IsMovableByKerosene(downLeft))
-        {
-            SwapParticles(upRight, downLeft);
-        }
-    }
+    MoveKeroseneSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
+    MoveKeroseneSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
 }
 
 void MoveKeroseneLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float random, bool leftFell, bool rightFell)
 {
     if (random < 0.8 &&
-        ((upLeft.type == KEROSENE && IsMovableByKerosene(upRight) && !leftFell) ||
-        (upRight.type == KEROSENE && IsMovableByKerosene(upLeft) && !rightFell)))
+        ((upLeft.type == KEROSENE && CanMoveParticle(upLeft, upRight, random) && !leftFell) ||
+        (upRight.type == KEROSENE && CanMoveParticle(upRight, upLeft, random) && !rightFell)))
     {
         SwapParticles(upLeft, upRight);
     }
 
     if (random < 0.5 &&
-        ((downLeft.type == KEROSENE && IsMovableByKerosene(downRight) && !leftFell) ||
-        (downRight.type == KEROSENE && IsMovableByKerosene(downLeft) && !rightFell)))
+        ((downLeft.type == KEROSENE && CanMoveParticle(downLeft, downRight, random) && !leftFell) ||
+        (downRight.type == KEROSENE && CanMoveParticle(downRight, downLeft, random) && !rightFell)))
     {
         SwapParticles(downLeft, downRight);
     }

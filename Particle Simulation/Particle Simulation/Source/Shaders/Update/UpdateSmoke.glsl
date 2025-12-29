@@ -1,16 +1,12 @@
-bool IsMovableBySmoke(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.4;
-        default: return false;
-    }
-}
-
 void DissipateSmoke(inout Particle particle)
 {
     if (particle.type == SMOKE)
-        particle.shade < -0.6 ? particle.type = VOID : particle.shade -= 0.01;
+    {
+        if (particle.shade < -0.6)
+            particle = CreateParticle(AIR, 0);
+        else
+            particle.shade -= 0.01;
+    }
 }
 
 void DissipateSmoke(inout Particle upLeft, inout Particle upRight, float random)
@@ -24,8 +20,8 @@ void DissipateSmoke(inout Particle upLeft, inout Particle upRight, float random)
 
 void MoveSmokeLaterally(inout Particle left, inout Particle right, float random)
 {
-    if ((left.type == SMOKE && IsMovableBySmoke(right, random)) ||
-        (right.type == SMOKE && IsMovableBySmoke(left, random)))
+    if ((left.type == SMOKE && CanMoveParticle(right, left, random)) ||
+        (right.type == SMOKE && CanMoveParticle(left, right, random)))
     {
         SwapParticles(left, right);
     }
@@ -43,9 +39,9 @@ void MoveSmokeUp(inout Particle moving, inout Particle top,
 {
     if (moving.type == SMOKE)
     {
-        if (IsMovableBySmoke(top, random))
+        if (CanMoveParticle(top, moving, random))
             SwapParticles(moving, top);
-        else if (IsMovableBySmoke(diagonal, random))
+        else if (CanMoveParticle(diagonal, moving, random))
             SwapParticles(moving, diagonal);
     }
 }

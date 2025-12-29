@@ -1,38 +1,23 @@
-bool IsMovableBySand(Particle particle, float random)
+void MoveSandSide(inout Particle moving, Particle side,
+    inout Particle bottom, inout Particle diagonal, float random)
 {
-    switch (particle.type)
+    if (moving.type == SAND)
     {
-        case VOID: return random < 0.9;
-        case WATER: return random < 0.4;
-        case SMOKE: return random < 0.88;
-        case KEROSENE: return random < 0.48;
-        case STEAM: return random < 0.9;
-        case SEAWATER: return random < 0.39;
-        case LAVA: return random < 0.13;
-        case ACID: return random < 0.22;
-        case METHANE: return random < 0.89;
-        case AMMONIA: return random < 0.89;
-        case CHLORINE: return random < 0.89;
-        default: return false;
+        if (CanMoveParticle(moving, bottom, random))
+        {
+            SwapParticles(moving, bottom);
+        }
+        else if (CanMoveParticle(moving, side, random) &&
+            CanMoveParticle(moving, diagonal, random))
+        {
+            SwapParticles(moving, diagonal);
+        }
     }
 }
 
 void UpdateSand(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    if (upLeft.type == SAND)
-    {
-        if (IsMovableBySand(downLeft, random))
-            SwapParticles(upLeft, downLeft);
-        else if (IsMovableBySand(upRight, random) && IsMovableBySand(downRight, random))
-            SwapParticles(upLeft, downRight);
-    }
-
-    if (upRight.type == SAND)
-    {
-        if (IsMovableBySand(downRight, random))
-            SwapParticles(upRight, downRight);
-        else if (IsMovableBySand(upLeft, random) && IsMovableBySand(downLeft, random))
-            SwapParticles(upRight, downLeft);
-    }
+    MoveSandSide(upLeft, upRight, downLeft, downRight, random);
+    MoveSandSide(upRight, upLeft, downRight, downLeft, random);
 }

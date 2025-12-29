@@ -21,31 +21,12 @@ bool CanMeltIntoLava(Particle particle, float random)
     }
 }
 
-bool IsMovableByLava(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.9;
-        case WATER: return random < 0.21;
-        case SMOKE: return random < 0.68;
-        case FIRE: return random < 0.6;
-        case KEROSENE: return random < 0.24;
-        case STEAM: return random < 0.7;
-        case SEAWATER: return random < 0.21;
-        case ACID: return random < 0.28;
-        case METHANE: return random < 0.69;
-        case AMMONIA: return random < 0.69;
-        case CHLORINE: return random < 0.65;
-        default: return false;
-    }
-}
-
 bool SolidifyLava(inout Particle particle, float probability, float random)
 {
     bool solidified = particle.type == LAVA && random < probability;
 
     if (solidified)
-        particle.type = STONE;
+        particle = CreateParticle(STONE, particle.shade);
 
     return solidified;
 }
@@ -87,7 +68,7 @@ void UpdateLavaShade(inout Particle upLeft, inout Particle upRight,
 void MeltParticleIntoLava(inout Particle particle, float random)
 {
     if (CanMeltIntoLava(particle, random))
-        particle.type = LAVA;
+        particle = CreateParticle(LAVA, particle.shade);
 }
 
 void MeltParticlesIntoLava(inout Particle upLeft, inout Particle upRight,
@@ -107,49 +88,44 @@ void MeltParticlesIntoLava(inout Particle upLeft, inout Particle upRight,
     }
 }
 
+void MoveLavaSideDown(inout Particle moving, Particle side, inout Particle bottom,
+    inout Particle diagonal, float random, inout bool fell)
+{
+    if (moving.type == LAVA)
+    {
+        if (CanMoveParticle(moving, bottom, random))
+        {
+            fell = true;
+            SwapParticles(moving, bottom);
+        }
+        else if (CanMoveParticle(moving, side, random) &&
+            CanMoveParticle(moving, diagonal, random))
+        {
+            SwapParticles(moving, diagonal);
+        }
+    }
+}
+
 void MoveLavaDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
 {
-    if (upLeft.type == LAVA)
-    {
-        if (IsMovableByLava(downLeft, random))
-        {
-            leftFell = true;
-            SwapParticles(upLeft, downLeft);
-        }
-        else if (IsMovableByLava(upRight, random) && IsMovableByLava(downRight, random))
-        {
-            SwapParticles(upLeft, downRight);
-        }
-    }
-
-    if (upRight.type == LAVA)
-    {
-        if (IsMovableByLava(downRight, random))
-        {
-            rightFell = true;
-            SwapParticles(upRight, downRight);
-        }
-        else if (IsMovableByLava(upLeft, random) && IsMovableByLava(downLeft, random))
-        {
-            SwapParticles(upRight, downLeft);
-        }
-    }
+    MoveLavaSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
+    MoveLavaSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
 }
 
 void MoveLavaLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomB, float randomC, bool leftFell, bool rightFell)
 {
     if (randomB < 0.8 &&
-        ((upLeft.type == LAVA && IsMovableByLava(upRight, randomC) && !leftFell) ||
-        (upRight.type == LAVA && IsMovableByLava(upLeft, randomC) && !rightFell)))
+        ((upLeft.type == LAVA && CanMoveParticle(upLeft, upRight, randomC) && !leftFell) ||
+        (upRight.type == LAVA && CanMoveParticle(upRight, upLeft, randomC) && !rightFell)))
     {
         SwapParticles(upLeft, upRight);
     }
 
     if (randomB < 0.5 &&
-        ((downLeft.type == LAVA && IsMovableByLava(downRight, randomC) && !leftFell) ||
-        (downRight.type == LAVA && IsMovableByLava(downLeft, randomC) && !rightFell)))
+        ((downLeft.type == LAVA && CanMoveParticle(downLeft, downRight, randomC) && !leftFell) ||
+        (downRight.type == LAVA && CanMoveParticle(downRight, downLeft, randomC) && !rightFell)))
     {
         SwapParticles(downLeft, downRight);
     }

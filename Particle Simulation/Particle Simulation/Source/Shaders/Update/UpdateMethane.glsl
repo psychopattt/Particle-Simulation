@@ -1,18 +1,7 @@
-bool IsMovableByMethane(Particle particle, float random)
-{
-    switch (particle.type)
-    {
-        case VOID: return random < 0.6;
-        case SMOKE: return random < 0.24;
-        case AMMONIA: return random < 0.05;
-        default: return false;
-    }
-}
-
 void MoveMethaneLaterally(inout Particle left, inout Particle right, float random)
 {
-    if ((left.type == METHANE && IsMovableByMethane(right, random)) ||
-        (right.type == METHANE && IsMovableByMethane(left, random)))
+    if ((left.type == METHANE && CanMoveParticle(right, left, random)) ||
+        (right.type == METHANE && CanMoveParticle(left, right, random)))
     {
         SwapParticles(left, right);
     }
@@ -30,9 +19,9 @@ void MoveMethaneUp(inout Particle moving, inout Particle top,
 {
     if (moving.type == METHANE)
     {
-        if (IsMovableByMethane(top, random))
+        if (CanMoveParticle(top, moving, random))
             SwapParticles(moving, top);
-        else if (IsMovableByMethane(diagonal, random))
+        else if (CanMoveParticle(diagonal, moving, random))
             SwapParticles(moving, diagonal);
     }
 }

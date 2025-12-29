@@ -74,11 +74,11 @@ void Sandbox::Execute()
 
 void Sandbox::Draw()
 {
-	using DrawSettings::VoidColor;
+	using DrawSettings::AirColor;
 
 	ExecuteDrawMode();
 
-	colorShader->SetUniform("voidColor", VoidColor[0], VoidColor[1], VoidColor[2]);
+	colorShader->SetUniform("airColor", AirColor[0], AirColor[1], AirColor[2]);
 	colorShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
 	colorShader->Execute();
 

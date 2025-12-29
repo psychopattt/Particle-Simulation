@@ -35,7 +35,7 @@ bool KillVine(inout Particle particle, float probability, float random)
     bool dead = particle.type == VINE && random < probability;
 
     if (dead)
-        particle.type = VOID;
+        particle = CreateParticle(AIR, 0);
 
     return dead;
 }
@@ -58,8 +58,8 @@ void KillVine(inout Particle upLeft, inout Particle upRight,
 
 void GrowVineSide(Particle up, inout Particle down)
 {
-    if (up.type == VINE && up.shade < -0.2 && down.type == VOID)
-        down = Particle(VINE, up.shade + 0.005);
+    if (up.type == VINE && up.shade < -0.2 && down.type == AIR)
+        down = CreateParticle(VINE, up.shade + 0.005);
 }
 
 void GrowVine(Particle upLeft, Particle upRight,
@@ -80,12 +80,12 @@ void GrowVine(Particle upLeft, Particle upRight,
 void SpreadVinePattern(Particle origin, inout Particle target,
     Particle supportA, Particle supportB, float random)
 {
-    bool typesValid = origin.type == VINE && target.type == VOID;
+    bool typesValid = origin.type == VINE && target.type == AIR;
     bool supported = CanSupportVine(supportA, random) ||
         CanSupportVine(supportB, random);
 
     if (typesValid && supported)
-        target = Particle(VINE, HashVec2(vec2(random, origin.shade)) - 0.5);
+        target = CreateParticle(VINE, HashVec2(vec2(random, origin.shade)) - 0.5);
 }
 
 void SpreadVine(inout Particle upLeft, inout Particle upRight,
