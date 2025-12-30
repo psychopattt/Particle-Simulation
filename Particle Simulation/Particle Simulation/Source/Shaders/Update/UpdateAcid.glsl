@@ -6,7 +6,7 @@ bool IsDissolvableByAcid(Particle particle, float random)
         case WATER: return random < 0.017;
         case WOOD: return random < 0.034;
         case STONE: return random < 0.005;
-        case KEROSENE: return random < 0.012;
+        case PETROL: return random < 0.012;
         case STEAM: return random < 0.0187;
         case SEAWATER: return random < 0.0154;
         case LAVA: return random < 0.007;

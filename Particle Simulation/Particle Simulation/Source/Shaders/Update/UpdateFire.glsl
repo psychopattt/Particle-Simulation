@@ -13,7 +13,7 @@ bool CanCatchFire(Particle particle, float random)
     switch (particle.type)
     {
         case WOOD: return random < 0.07;
-        case KEROSENE: return random < 0.18;
+        case PETROL: return random < 0.18;
         case SAWDUST: return random < 0.13;
         case VINE: return random < 0.1;
         case METHANE: return random < 0.38;

@@ -3,7 +3,7 @@ bool CanKillVine(Particle particle, float random)
     switch (particle.type)
     {
         case SMOKE: return random < 0.0015;
-        case KEROSENE: return random < 0.025;
+        case PETROL: return random < 0.025;
         case SEAWATER: return random < 0.011;
         case SALT: return random < 0.015;
         case METHANE: return random < 0.0012;
