@@ -1,5 +1,5 @@
-void MovePetrolSideDown(inout Particle moving, Particle side,
-    inout Particle bottom, inout Particle diagonal, float random, inout bool fell)
+void MovePetrolDown(inout Particle moving, Particle side, inout Particle bottom,
+    inout Particle diagonal, inout bool fell, float random)
 {
     if (moving.type == PETROL)
     {
@@ -16,36 +16,33 @@ void MovePetrolSideDown(inout Particle moving, Particle side,
     }
 }
 
-void MovePetrolDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
+void MovePetrolDown(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
 {
-    MovePetrolSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
-    MovePetrolSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
+    MovePetrolDown(upLeft, upRight, downLeft, downRight, fell.x, random);
+    MovePetrolDown(upRight, upLeft, downRight, downLeft, fell.y, random);
 }
 
-void MovePetrolLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, bool leftFell, bool rightFell)
+void MovePetrolLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
 {
-    if (random < 0.8 &&
-        ((upLeft.type == PETROL && CanMoveParticle(upLeft, upRight, random) && !leftFell) ||
-        (upRight.type == PETROL && CanMoveParticle(upRight, upLeft, random) && !rightFell)))
+    if ((left.type == PETROL && !fell.x && CanMoveParticle(left, right, random)) ||
+        (right.type == PETROL && !fell.y && CanMoveParticle(right, left, random)))
     {
-        SwapParticles(upLeft, upRight);
+        SwapParticles(left, right);
     }
+}
 
-    if (random < 0.5 &&
-        ((downLeft.type == PETROL && CanMoveParticle(downLeft, downRight, random) && !leftFell) ||
-        (downRight.type == PETROL && CanMoveParticle(downRight, downLeft, random) && !rightFell)))
-    {
-        SwapParticles(downLeft, downRight);
-    }
+void MovePetrolLaterally(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
+{
+    MovePetrolLaterally(upLeft, upRight, fell, random * 1.125);
+    MovePetrolLaterally(downLeft, downRight, fell, random * 1.8);
 }
 
 void UpdatePetrol(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
 {
-    bool leftFell = false;
-    bool rightFell = false;
-    MovePetrolDown(upLeft, upRight, downLeft, downRight, randomA, leftFell, rightFell);
-    MovePetrolLaterally(upLeft, upRight, downLeft, downRight, randomB, leftFell, rightFell);
+    bvec2 fell = bvec2(false);
+    MovePetrolDown(upLeft, upRight, downLeft, downRight, fell, randomA);
+    MovePetrolLaterally(upLeft, upRight, downLeft, downRight, fell, randomB);
 }
