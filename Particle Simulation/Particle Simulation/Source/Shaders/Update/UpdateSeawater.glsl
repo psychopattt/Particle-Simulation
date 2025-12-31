@@ -33,8 +33,8 @@ void VaporizeSeawater(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveSeawaterSideDown(inout Particle moving, Particle side,
-    inout Particle bottom, inout Particle diagonal, float random, inout bool fell)
+void MoveSeawaterDown(inout Particle moving, Particle side, inout Particle bottom,
+    inout Particle diagonal, inout bool fell, float random)
 {
     if (moving.type == SEAWATER)
     {
@@ -51,29 +51,27 @@ void MoveSeawaterSideDown(inout Particle moving, Particle side,
     }
 }
 
-void MoveSeawaterDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
+void MoveSeawaterDown(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
 {
-    MoveSeawaterSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
-    MoveSeawaterSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
+    MoveSeawaterDown(upLeft, upRight, downLeft, downRight, fell.x, random);
+    MoveSeawaterDown(upRight, upLeft, downRight, downLeft, fell.y, random);
 }
 
-void MoveSeawaterLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, bool leftFell, bool rightFell)
+void MoveSeawaterLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
 {
-    if (random < 0.8 &&
-        ((upLeft.type == SEAWATER && CanMoveParticle(upLeft, upRight, random) && !leftFell) ||
-        (upRight.type == SEAWATER && CanMoveParticle(upRight, upLeft, random) && !rightFell)))
+    if ((left.type == SEAWATER && !fell.x && CanMoveParticle(left, right, random)) ||
+        (right.type == SEAWATER && !fell.y && CanMoveParticle(right, left, random)))
     {
-        SwapParticles(upLeft, upRight);
+        SwapParticles(left, right);
     }
+}
 
-    if (random < 0.5 &&
-        ((downLeft.type == SEAWATER && CanMoveParticle(downLeft, downRight, random) && !leftFell) ||
-        (downRight.type == SEAWATER && CanMoveParticle(downRight, downLeft, random) && !rightFell)))
-    {
-        SwapParticles(downLeft, downRight);
-    }
+void MoveSeawaterLaterally(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
+{
+    MoveSeawaterLaterally(upLeft, upRight, fell, random * 1.125);
+    MoveSeawaterLaterally(downLeft, downRight, fell, random * 1.8);
 }
 
 void UpdateSeawater(inout Particle upLeft, inout Particle upRight,
@@ -81,8 +79,7 @@ void UpdateSeawater(inout Particle upLeft, inout Particle upRight,
 {
     VaporizeSeawater(upLeft, upRight, downLeft, downRight, randomA, randomB);
 
-    bool leftFell = false;
-    bool rightFell = false;
-    MoveSeawaterDown(upLeft, upRight, downLeft, downRight, randomA, leftFell, rightFell);
-    MoveSeawaterLaterally(upLeft, upRight, downLeft, downRight, randomB, leftFell, rightFell);
+    bvec2 fell = bvec2(false);
+    MoveSeawaterDown(upLeft, upRight, downLeft, downRight, fell, randomA);
+    MoveSeawaterLaterally(upLeft, upRight, downLeft, downRight, fell, randomB);
 }
