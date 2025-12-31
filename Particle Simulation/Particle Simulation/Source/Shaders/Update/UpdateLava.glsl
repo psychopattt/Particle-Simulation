@@ -88,8 +88,8 @@ void MeltParticlesIntoLava(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveLavaSideDown(inout Particle moving, Particle side, inout Particle bottom,
-    inout Particle diagonal, float random, inout bool fell)
+void MoveLavaDown(inout Particle moving, Particle side, inout Particle bottom,
+    inout Particle diagonal, inout bool fell, float random)
 {
     if (moving.type == LAVA)
     {
@@ -106,29 +106,27 @@ void MoveLavaSideDown(inout Particle moving, Particle side, inout Particle botto
     }
 }
 
-void MoveLavaDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
+void MoveLavaDown(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
 {
-    MoveLavaSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
-    MoveLavaSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
+    MoveLavaDown(upLeft, upRight, downLeft, downRight, fell.x, random);
+    MoveLavaDown(upRight, upLeft, downRight, downLeft, fell.y, random);
 }
 
-void MoveLavaLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomB, float randomC, bool leftFell, bool rightFell)
+void MoveLavaLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
 {
-    if (randomB < 0.8 &&
-        ((upLeft.type == LAVA && CanMoveParticle(upLeft, upRight, randomC) && !leftFell) ||
-        (upRight.type == LAVA && CanMoveParticle(upRight, upLeft, randomC) && !rightFell)))
+    if ((left.type == LAVA && !fell.x && CanMoveParticle(left, right, random)) ||
+        (right.type == LAVA && !fell.y && CanMoveParticle(right, left, random)))
     {
-        SwapParticles(upLeft, upRight);
+        SwapParticles(left, right);
     }
+}
 
-    if (randomB < 0.5 &&
-        ((downLeft.type == LAVA && CanMoveParticle(downLeft, downRight, randomC) && !leftFell) ||
-        (downRight.type == LAVA && CanMoveParticle(downRight, downLeft, randomC) && !rightFell)))
-    {
-        SwapParticles(downLeft, downRight);
-    }
+void MoveLavaLaterally(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
+{
+    MoveLavaLaterally(upLeft, upRight, fell, random * 1.125);
+    MoveLavaLaterally(downLeft, downRight, fell, random * 1.8);
 }
 
 void UpdateLava(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
@@ -138,8 +136,7 @@ void UpdateLava(inout Particle upLeft, inout Particle upRight, inout Particle do
     UpdateLavaShade(upLeft, upRight, downLeft, downRight, randomA);
     MeltParticlesIntoLava(upLeft, upRight, downLeft, downRight, randomA, randomB);
 
-    bool leftFell = false;
-    bool rightFell = false;
-    MoveLavaDown(upLeft, upRight, downLeft, downRight, randomA, leftFell, rightFell);
-    MoveLavaLaterally(upLeft, upRight, downLeft, downRight, randomB, randomC, leftFell, rightFell);
+    bvec2 fell = bvec2(false);
+    MoveLavaDown(upLeft, upRight, downLeft, downRight, fell, randomA);
+    MoveLavaLaterally(upLeft, upRight, downLeft, downRight, fell, randomB);
 }
