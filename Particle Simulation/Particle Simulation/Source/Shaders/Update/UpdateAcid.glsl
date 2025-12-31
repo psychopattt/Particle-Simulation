@@ -86,8 +86,8 @@ void NeutralizeAcid(inout Particle upLeft, inout Particle upRight,
     neutralized = neutralized || NeutralizeAcid(downRight, probability, random);
 }
 
-void MoveAcidSideDown(inout Particle moving, Particle side, inout Particle bottom,
-    inout Particle diagonal, float random, inout bool fell)
+void MoveAcidDown(inout Particle moving, Particle side, inout Particle bottom,
+    inout Particle diagonal, inout bool fell, float random)
 {
     if (moving.type == ACID)
     {
@@ -104,29 +104,27 @@ void MoveAcidSideDown(inout Particle moving, Particle side, inout Particle botto
     }
 }
 
-void MoveAcidDown(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, inout bool leftFell, inout bool rightFell)
+void MoveAcidDown(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
 {
-    MoveAcidSideDown(upLeft, upRight, downLeft, downRight, random, leftFell);
-    MoveAcidSideDown(upRight, upLeft, downRight, downLeft, random, rightFell);
+    MoveAcidDown(upLeft, upRight, downLeft, downRight, fell.x, random);
+    MoveAcidDown(upRight, upLeft, downRight, downLeft, fell.y, random);
 }
 
-void MoveAcidLaterally(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float random, bool leftFell, bool rightFell)
+void MoveAcidLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
 {
-    if (random < 0.8 &&
-        ((upLeft.type == ACID && CanMoveParticle(upLeft, upRight, random) && !leftFell) ||
-        (upRight.type == ACID && CanMoveParticle(upRight, upLeft, random) && !rightFell)))
+    if ((left.type == ACID && !fell.x && CanMoveParticle(left, right, random)) ||
+        (right.type == ACID && !fell.y && CanMoveParticle(right, left, random)))
     {
-        SwapParticles(upLeft, upRight);
+        SwapParticles(left, right);
     }
+}
 
-    if (random < 0.5 &&
-        ((downLeft.type == ACID && CanMoveParticle(downLeft, downRight, random) && !leftFell) ||
-        (downRight.type == ACID && CanMoveParticle(downRight, downLeft, random) && !rightFell)))
-    {
-        SwapParticles(downLeft, downRight);
-    }
+void MoveAcidLaterally(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
+{
+    MoveAcidLaterally(upLeft, upRight, fell, random * 1.125);
+    MoveAcidLaterally(downLeft, downRight, fell, random * 1.8);
 }
 
 void UpdateAcid(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
@@ -135,8 +133,7 @@ void UpdateAcid(inout Particle upLeft, inout Particle upRight, inout Particle do
     DissolveParticlesByAcid(upLeft, upRight, downLeft, downRight, randomA, randomB);
     NeutralizeAcid(upLeft, upRight, downLeft, downRight, randomC);
 
-    bool leftFell = false;
-    bool rightFell = false;
-    MoveAcidDown(upLeft, upRight, downLeft, downRight, randomA, leftFell, rightFell);
-    MoveAcidLaterally(upLeft, upRight, downLeft, downRight, randomC, leftFell, rightFell);
+    bvec2 fell = bvec2(false);
+    MoveAcidDown(upLeft, upRight, downLeft, downRight, fell, randomA);
+    MoveAcidLaterally(upLeft, upRight, downLeft, downRight, fell, randomC);
 }
