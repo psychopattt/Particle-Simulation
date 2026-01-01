@@ -86,54 +86,10 @@ void NeutralizeAcid(inout Particle upLeft, inout Particle upRight,
     neutralized = neutralized || NeutralizeAcid(downRight, probability, random);
 }
 
-void MoveAcidDown(inout Particle moving, Particle side, inout Particle bottom,
-    inout Particle diagonal, inout bool fell, float random)
-{
-    if (moving.type == ACID)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-        {
-            fell = true;
-            SwapParticles(moving, bottom);
-        }
-        else if (CanMoveParticle(moving, side, random) &&
-            CanMoveParticle(moving, diagonal, random))
-        {
-            SwapParticles(moving, diagonal);
-        }
-    }
-}
-
-void MoveAcidDown(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
-{
-    MoveAcidDown(upLeft, upRight, downLeft, downRight, fell.x, random);
-    MoveAcidDown(upRight, upLeft, downRight, downLeft, fell.y, random);
-}
-
-void MoveAcidLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
-{
-    if ((left.type == ACID && !fell.x && CanMoveParticle(left, right, random)) ||
-        (right.type == ACID && !fell.y && CanMoveParticle(right, left, random)))
-    {
-        SwapParticles(left, right);
-    }
-}
-
-void MoveAcidLaterally(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
-{
-    MoveAcidLaterally(upLeft, upRight, fell, random * 1.125);
-    MoveAcidLaterally(downLeft, downRight, fell, random * 1.8);
-}
-
 void UpdateAcid(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
     DissolveParticlesByAcid(upLeft, upRight, downLeft, downRight, randomA, randomB);
     NeutralizeAcid(upLeft, upRight, downLeft, downRight, randomC);
-
-    bvec2 fell = bvec2(false);
-    MoveAcidDown(upLeft, upRight, downLeft, downRight, fell, randomA);
-    MoveAcidLaterally(upLeft, upRight, downLeft, downRight, fell, randomC);
+    MoveLiquid(ACID, upLeft, upRight, downLeft, downRight, randomA, randomB);
 }

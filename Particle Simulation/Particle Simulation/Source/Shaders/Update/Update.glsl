@@ -58,6 +58,8 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
     particle2 = temp;
 }
 
+#include "MoveLiquid.glsl"
+
 #include "UpdateSand.glsl"
 #include "UpdateWater.glsl"
 #include "UpdateSmoke.glsl"

@@ -33,53 +33,9 @@ void VaporizeSeawater(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveSeawaterDown(inout Particle moving, Particle side, inout Particle bottom,
-    inout Particle diagonal, inout bool fell, float random)
-{
-    if (moving.type == SEAWATER)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-        {
-            fell = true;
-            SwapParticles(moving, bottom);
-        }
-        else if (CanMoveParticle(moving, side, random) &&
-            CanMoveParticle(moving, diagonal, random))
-        {
-            SwapParticles(moving, diagonal);
-        }
-    }
-}
-
-void MoveSeawaterDown(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
-{
-    MoveSeawaterDown(upLeft, upRight, downLeft, downRight, fell.x, random);
-    MoveSeawaterDown(upRight, upLeft, downRight, downLeft, fell.y, random);
-}
-
-void MoveSeawaterLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
-{
-    if ((left.type == SEAWATER && !fell.x && CanMoveParticle(left, right, random)) ||
-        (right.type == SEAWATER && !fell.y && CanMoveParticle(right, left, random)))
-    {
-        SwapParticles(left, right);
-    }
-}
-
-void MoveSeawaterLaterally(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
-{
-    MoveSeawaterLaterally(upLeft, upRight, fell, random * 1.125);
-    MoveSeawaterLaterally(downLeft, downRight, fell, random * 1.8);
-}
-
 void UpdateSeawater(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
 {
     VaporizeSeawater(upLeft, upRight, downLeft, downRight, randomA, randomB);
-
-    bvec2 fell = bvec2(false);
-    MoveSeawaterDown(upLeft, upRight, downLeft, downRight, fell, randomA);
-    MoveSeawaterLaterally(upLeft, upRight, downLeft, downRight, fell, randomB);
+    MoveLiquid(SEAWATER, upLeft, upRight, downLeft, downRight, randomA, randomB);
 }

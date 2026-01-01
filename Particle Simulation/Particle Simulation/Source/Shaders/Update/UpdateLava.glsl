@@ -88,55 +88,11 @@ void MeltParticlesIntoLava(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveLavaDown(inout Particle moving, Particle side, inout Particle bottom,
-    inout Particle diagonal, inout bool fell, float random)
-{
-    if (moving.type == LAVA)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-        {
-            fell = true;
-            SwapParticles(moving, bottom);
-        }
-        else if (CanMoveParticle(moving, side, random) &&
-            CanMoveParticle(moving, diagonal, random))
-        {
-            SwapParticles(moving, diagonal);
-        }
-    }
-}
-
-void MoveLavaDown(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, inout bvec2 fell, float random)
-{
-    MoveLavaDown(upLeft, upRight, downLeft, downRight, fell.x, random);
-    MoveLavaDown(upRight, upLeft, downRight, downLeft, fell.y, random);
-}
-
-void MoveLavaLaterally(inout Particle left, inout Particle right, bvec2 fell, float random)
-{
-    if ((left.type == LAVA && !fell.x && CanMoveParticle(left, right, random)) ||
-        (right.type == LAVA && !fell.y && CanMoveParticle(right, left, random)))
-    {
-        SwapParticles(left, right);
-    }
-}
-
-void MoveLavaLaterally(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, bvec2 fell, float random)
-{
-    MoveLavaLaterally(upLeft, upRight, fell, random * 1.125);
-    MoveLavaLaterally(downLeft, downRight, fell, random * 1.8);
-}
-
 void UpdateLava(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
     SolidifyLava(upLeft, upRight, downLeft, downRight, randomA, randomC);
     UpdateLavaShade(upLeft, upRight, downLeft, downRight, randomA);
     MeltParticlesIntoLava(upLeft, upRight, downLeft, downRight, randomA, randomB);
-
-    bvec2 fell = bvec2(false);
-    MoveLavaDown(upLeft, upRight, downLeft, downRight, fell, randomA);
-    MoveLavaLaterally(upLeft, upRight, downLeft, downRight, fell, randomB);
+    MoveLiquid(LAVA, upLeft, upRight, downLeft, downRight, randomA, randomB);
 }
