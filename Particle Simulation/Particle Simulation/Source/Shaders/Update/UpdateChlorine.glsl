@@ -56,54 +56,10 @@ void DissolveChlorine(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveChlorineLaterally(inout Particle left, inout Particle right, float random)
-{
-    if ((left.type == CHLORINE && CanMoveParticle(left, right, random)) ||
-        (right.type == CHLORINE && CanMoveParticle(right, left, random)))
-    {
-        SwapParticles(left, right);
-    }
-}
-
-void MoveChlorineLaterally(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float random)
-{
-    MoveChlorineLaterally(upLeft, upRight, random);
-    MoveChlorineLaterally(downLeft, downRight, random);
-}
-
-void MoveChlorineDown(inout Particle moving, inout Particle bottom,
-    inout Particle diagonal, float random)
-{
-    if (moving.type == CHLORINE)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-            SwapParticles(moving, bottom);
-        else if (CanMoveParticle(moving, diagonal, random))
-            SwapParticles(moving, diagonal);
-    }
-}
-
-void MoveChlorineDown(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
-{
-    if (randomB < 0.5)
-    {
-        MoveChlorineDown(upLeft, downLeft, downRight, randomA);
-        MoveChlorineDown(upRight, downRight, downLeft, randomA);
-    }
-    else
-    {
-        MoveChlorineDown(upRight, downRight, downLeft, randomA);
-        MoveChlorineDown(upLeft, downLeft, downRight, randomA);
-    }
-}
-
 void UpdateChlorine(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
     IgniteChlorine(upLeft, upRight, downLeft, downRight, randomC);
     DissolveChlorine(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MoveChlorineLaterally(upLeft, upRight, downLeft, downRight, randomA * 1.05);
-    MoveChlorineDown(upLeft, upRight, downLeft, downRight, randomA, randomB);
+    MoveGas(CHLORINE, 1.05, upLeft, upRight, downLeft, downRight, randomA, randomB);
 }
