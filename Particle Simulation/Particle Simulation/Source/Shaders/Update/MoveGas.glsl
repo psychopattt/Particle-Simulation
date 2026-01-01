@@ -1,5 +1,5 @@
-void MoveGasLaterally(int type, bool light, inout Particle left,
-    inout Particle right, float random)
+void MoveGasLaterally(int type, bool light,
+    inout Particle left, inout Particle right, float random)
 {
     Particle originA = light ? right : left;
     Particle originB = light ? left : right;
