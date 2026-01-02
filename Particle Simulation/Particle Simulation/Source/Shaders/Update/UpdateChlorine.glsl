@@ -37,29 +37,29 @@ void DissolveChlorine(inout Particle solvent, inout Particle solute1,
 }
 
 void DissolveChlorine(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     if (upRight.type == CHLORINE || downLeft.type == CHLORINE)
     {
-        if (randomA < 0.5)
-            DissolveChlorine(upLeft, downLeft, upRight, randomB);
+        if (random.x < 0.5)
+            DissolveChlorine(upLeft, downLeft, upRight, random.y);
         else
-            DissolveChlorine(downRight, upRight, downLeft, randomB);
+            DissolveChlorine(downRight, upRight, downLeft, random.y);
     }
 
     if (upLeft.type == CHLORINE || downRight.type == CHLORINE)
     {
-        if (randomB < 0.5)
-            DissolveChlorine(upRight, downRight, upLeft, randomA);
+        if (random.y < 0.5)
+            DissolveChlorine(upRight, downRight, upLeft, random.x);
         else
-            DissolveChlorine(downLeft, upLeft, downRight, randomA);
+            DissolveChlorine(downLeft, upLeft, downRight, random.x);
     }
 }
 
-void UpdateChlorine(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateChlorine(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    IgniteChlorine(upLeft, upRight, downLeft, downRight, randomC);
-    DissolveChlorine(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MoveGas(CHLORINE, 1.05, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    IgniteChlorine(upLeft, upRight, downLeft, downRight, random.z);
+    DissolveChlorine(upLeft, upRight, downLeft, downRight, random);
+    MoveGas(CHLORINE, 1.05, upLeft, upRight, downLeft, downRight, random);
 }

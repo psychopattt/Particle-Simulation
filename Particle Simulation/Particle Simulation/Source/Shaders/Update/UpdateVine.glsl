@@ -41,19 +41,19 @@ bool KillVine(inout Particle particle, float probability, float random)
 }
 
 void KillVine(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float probability = 0.33 * (
-        float(CanKillVine(upLeft, randomB)) +
-        float(CanKillVine(upRight, randomB)) +
-        float(CanKillVine(downLeft, randomB)) +
-        float(CanKillVine(downRight, randomB))
+        float(CanKillVine(upLeft, random.y)) +
+        float(CanKillVine(upRight, random.y)) +
+        float(CanKillVine(downLeft, random.y)) +
+        float(CanKillVine(downRight, random.y))
     );
 
-    bool dead = KillVine(upLeft, probability * 0.25, randomA);
-    dead = dead || KillVine(upRight, probability * 0.5, randomA);
-    dead = dead || KillVine(downLeft, probability * 0.75, randomA);
-    dead = dead || KillVine(downRight, probability, randomA);
+    bool dead = KillVine(upLeft, probability * 0.25, random.x);
+    dead = dead || KillVine(upRight, probability * 0.5, random.x);
+    dead = dead || KillVine(downLeft, probability * 0.75, random.x);
+    dead = dead || KillVine(downRight, probability, random.x);
 }
 
 void GrowVineSide(Particle up, inout Particle down)
@@ -89,30 +89,30 @@ void SpreadVinePattern(Particle origin, inout Particle target,
 }
 
 void SpreadVine(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomB, float randomC)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    if (randomB < 0.5)
+    if (random.y < 0.5)
     {
-        SpreadVinePattern(upLeft, upRight, downLeft, downRight, randomC);
-        SpreadVinePattern(upLeft, downLeft, upRight, downRight, randomC);
+        SpreadVinePattern(upLeft, upRight, downLeft, downRight, random.z);
+        SpreadVinePattern(upLeft, downLeft, upRight, downRight, random.z);
 
-        SpreadVinePattern(downRight, downLeft, upLeft, upRight, randomC);
-        SpreadVinePattern(downRight, upRight, upLeft, downLeft, randomC);
+        SpreadVinePattern(downRight, downLeft, upLeft, upRight, random.z);
+        SpreadVinePattern(downRight, upRight, upLeft, downLeft, random.z);
     }
     else
     {
-        SpreadVinePattern(upRight, upLeft, downLeft, downRight, randomC);
-        SpreadVinePattern(upRight, downRight, upLeft, downLeft, randomC);
+        SpreadVinePattern(upRight, upLeft, downLeft, downRight, random.z);
+        SpreadVinePattern(upRight, downRight, upLeft, downLeft, random.z);
 
-        SpreadVinePattern(downLeft, downRight, upLeft, upRight, randomC);
-        SpreadVinePattern(downLeft, upLeft, upRight, downRight, randomC);
+        SpreadVinePattern(downLeft, downRight, upLeft, upRight, random.z);
+        SpreadVinePattern(downLeft, upLeft, upRight, downRight, random.z);
     }
 }
 
-void UpdateVine(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateVine(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    KillVine(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    GrowVine(upLeft, upRight, downLeft, downRight, randomA);
-    SpreadVine(upLeft, upRight, downLeft, downRight, randomB, randomC);
+    KillVine(upLeft, upRight, downLeft, downRight, random);
+    GrowVine(upLeft, upRight, downLeft, downRight, random.x);
+    SpreadVine(upLeft, upRight, downLeft, downRight, random);
 }

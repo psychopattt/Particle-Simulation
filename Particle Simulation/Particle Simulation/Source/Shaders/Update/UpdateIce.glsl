@@ -21,22 +21,22 @@ void FreezeParticleIntoIce(inout Particle particle, float random)
 }
 
 void FreezeParticlesIntoIce(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     if (upRight.type == ICE || downLeft.type == ICE)
     {
-        if (randomA < 0.5)
-            FreezeParticleIntoIce(upLeft, randomB);
+        if (random.x < 0.5)
+            FreezeParticleIntoIce(upLeft, random.y);
         else
-            FreezeParticleIntoIce(downRight, randomB);
+            FreezeParticleIntoIce(downRight, random.y);
     }
 
     if (upLeft.type == ICE || downRight.type == ICE)
     {
-        if (randomB < 0.5)
-            FreezeParticleIntoIce(upRight, randomA);
+        if (random.y < 0.5)
+            FreezeParticleIntoIce(upRight, random.x);
         else
-            FreezeParticleIntoIce(downLeft, randomA);
+            FreezeParticleIntoIce(downLeft, random.x);
     }
 }
 
@@ -46,17 +46,17 @@ void MeltIce(inout Particle particle)
         particle = CreateParticle(WATER, particle.shade);
 }
 
-void MeltIce(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomB, float randomC)
+void MeltIce(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float meltProbability = 0.35 * (
-        float(CanMeltIce(upLeft, randomB)) +
-        float(CanMeltIce(upRight, randomB)) +
-        float(CanMeltIce(downLeft, randomB)) +
-        float(CanMeltIce(downRight, randomB))
+        float(CanMeltIce(upLeft, random.y)) +
+        float(CanMeltIce(upRight, random.y)) +
+        float(CanMeltIce(downLeft, random.y)) +
+        float(CanMeltIce(downRight, random.y))
     );
 
-    if (randomC < meltProbability)
+    if (random.z < meltProbability)
     {
         MeltIce(upLeft);
         MeltIce(upRight);
@@ -65,9 +65,9 @@ void MeltIce(inout Particle upLeft, inout Particle upRight, inout Particle downL
     }
 }
 
-void UpdateIce(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateIce(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    FreezeParticlesIntoIce(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MeltIce(upLeft, upRight, downLeft, downRight, randomB, randomC);
+    FreezeParticlesIntoIce(upLeft, upRight, downLeft, downRight, random);
+    MeltIce(upLeft, upRight, downLeft, downRight, random);
 }

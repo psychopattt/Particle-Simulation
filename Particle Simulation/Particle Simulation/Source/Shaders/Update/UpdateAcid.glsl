@@ -32,22 +32,22 @@ void DissolveParticleByAcid(inout Particle particle, float random)
 }
 
 void DissolveParticlesByAcid(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     if (upRight.type == ACID || downLeft.type == ACID)
     {
-        if (randomA < 0.5)
-            DissolveParticleByAcid(upLeft, randomB);
+        if (random.x < 0.5)
+            DissolveParticleByAcid(upLeft, random.y);
         else
-            DissolveParticleByAcid(downRight, randomB);
+            DissolveParticleByAcid(downRight, random.y);
     }
 
     if (upLeft.type == ACID || downRight.type == ACID)
     {
-        if (randomB < 0.5)
-            DissolveParticleByAcid(upRight, randomA);
+        if (random.y < 0.5)
+            DissolveParticleByAcid(upRight, random.x);
         else
-            DissolveParticleByAcid(downLeft, randomA);
+            DissolveParticleByAcid(downLeft, random.x);
     }
 }
 
@@ -86,10 +86,10 @@ void NeutralizeAcid(inout Particle upLeft, inout Particle upRight,
     neutralized = neutralized || NeutralizeAcid(downRight, probability, random);
 }
 
-void UpdateAcid(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateAcid(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    DissolveParticlesByAcid(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    NeutralizeAcid(upLeft, upRight, downLeft, downRight, randomC);
-    MoveLiquid(ACID, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    DissolveParticlesByAcid(upLeft, upRight, downLeft, downRight, random);
+    NeutralizeAcid(upLeft, upRight, downLeft, downRight, random.z);
+    MoveLiquid(ACID, upLeft, upRight, downLeft, downRight, random);
 }

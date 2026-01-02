@@ -9,18 +9,18 @@ void DissipateSteam(inout Particle particle, float random)
     }
 }
 
-void DissipateSteam(inout Particle upLeft, inout Particle upRight, float randomB, float randomC)
+void DissipateSteam(inout Particle upLeft, inout Particle upRight, vec4 random)
 {
-    if (randomC < 0.05)
+    if (random.z < 0.05)
     {
-        DissipateSteam(upLeft, randomB);
-        DissipateSteam(upRight, randomB);
+        DissipateSteam(upLeft, random.y);
+        DissipateSteam(upRight, random.y);
     }
 }
 
-void UpdateSteam(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateSteam(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    DissipateSteam(upLeft, upRight, randomB, randomC);
-    MoveGas(STEAM, 5.2, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    DissipateSteam(upLeft, upRight, random);
+    MoveGas(STEAM, 5.2, upLeft, upRight, downLeft, downRight, random);
 }

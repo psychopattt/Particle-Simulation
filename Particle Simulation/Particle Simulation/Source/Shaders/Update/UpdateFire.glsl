@@ -73,7 +73,7 @@ void QuenchFireByParticle(inout Particle upLeft, inout Particle upRight,
 }
 
 void QuenchFireByFlammability(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float averageFlammability = 0.25 * (
         float(CanCatchFire(upLeft, 0) || CanIgniteFire(upLeft)) +
@@ -84,18 +84,18 @@ void QuenchFireByFlammability(inout Particle upLeft, inout Particle upRight,
 
     float quenchProbability = 0.102 - (averageFlammability * 0.1);
 
-    if (randomA < quenchProbability)
+    if (random.x < quenchProbability)
     {
-        QuenchFire(downLeft, randomC);
-        QuenchFire(downRight, randomC);
+        QuenchFire(downLeft, random.z);
+        QuenchFire(downRight, random.z);
     }
 }
 
 void QuenchFire(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    QuenchFireByParticle(upLeft, upRight, downLeft, downRight, randomC);
-    QuenchFireByFlammability(upLeft, upRight, downLeft, downRight, randomA, randomC);
+    QuenchFireByParticle(upLeft, upRight, downLeft, downRight, random.z);
+    QuenchFireByFlammability(upLeft, upRight, downLeft, downRight, random);
 }
 
 void UpdateFireShade(inout Particle particle, float random)
@@ -151,26 +151,26 @@ void MoveFireSideVertically(inout Particle origin, inout Particle mainTarget,
 }
 
 void MoveFireVertically(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomB, float randomC)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    if (randomB < 0.5)
+    if (random.y < 0.5)
     {
-        MoveFireSideVertically(upLeft, downLeft, downRight, randomC);
-        MoveFireSideVertically(upRight, downRight, downLeft, randomC);
+        MoveFireSideVertically(upLeft, downLeft, downRight, random.z);
+        MoveFireSideVertically(upRight, downRight, downLeft, random.z);
     }
     else
     {
-        MoveFireSideVertically(downLeft, upLeft, upRight, randomC);
-        MoveFireSideVertically(downRight, upRight, upLeft, randomC);
+        MoveFireSideVertically(downLeft, upLeft, upRight, random.z);
+        MoveFireSideVertically(downRight, upRight, upLeft, random.z);
     }
 }
 
-void UpdateFire(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateFire(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    SpreadFire(upLeft, upRight, downLeft, downRight, randomA);
-    QuenchFire(upLeft, upRight, downLeft, downRight, randomA, randomC);
-    UpdateFireShade(upLeft, upRight, downLeft, downRight, randomA);
-    MoveFireLaterally(upLeft, upRight, downLeft, downRight, randomB);
-    MoveFireVertically(upLeft, upRight, downLeft, downRight, randomB, randomC);
+    SpreadFire(upLeft, upRight, downLeft, downRight, random.x);
+    QuenchFire(upLeft, upRight, downLeft, downRight, random);
+    UpdateFireShade(upLeft, upRight, downLeft, downRight, random.x);
+    MoveFireLaterally(upLeft, upRight, downLeft, downRight, random.y);
+    MoveFireVertically(upLeft, upRight, downLeft, downRight, random);
 }

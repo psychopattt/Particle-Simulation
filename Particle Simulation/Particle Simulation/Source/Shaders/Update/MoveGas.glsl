@@ -31,17 +31,17 @@ void MoveGasUp(int type, inout Particle moving,
 }
 
 void MoveGasUp(int type, inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    if (randomB < 0.5)
+    if (random.y < 0.5)
     {
-        MoveGasUp(type, downLeft, upLeft, upRight, randomA);
-        MoveGasUp(type, downRight, upRight, upLeft, randomA);
+        MoveGasUp(type, downLeft, upLeft, upRight, random.x);
+        MoveGasUp(type, downRight, upRight, upLeft, random.x);
     }
     else
     {
-        MoveGasUp(type, downRight, upRight, upLeft, randomA);
-        MoveGasUp(type, downLeft, upLeft, upRight, randomA);
+        MoveGasUp(type, downRight, upRight, upLeft, random.x);
+        MoveGasUp(type, downLeft, upLeft, upRight, random.x);
     }
 }
 
@@ -58,30 +58,30 @@ void MoveGasDown(int type, inout Particle moving,
 }
 
 void MoveGasDown(int type, inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    if (randomB < 0.5)
+    if (random.y < 0.5)
     {
-        MoveGasDown(type, upLeft, downLeft, downRight, randomA);
-        MoveGasDown(type, upRight, downRight, downLeft, randomA);
+        MoveGasDown(type, upLeft, downLeft, downRight, random.x);
+        MoveGasDown(type, upRight, downRight, downLeft, random.x);
     }
     else
     {
-        MoveGasDown(type, upRight, downRight, downLeft, randomA);
-        MoveGasDown(type, upLeft, downLeft, downRight, randomA);
+        MoveGasDown(type, upRight, downRight, downLeft, random.x);
+        MoveGasDown(type, upLeft, downLeft, downRight, random.x);
     }
 }
 
-void MoveGas(int type, float lateralMultiplier, inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+void MoveGas(int type, float lateralMultiplier, inout Particle upLeft,
+    inout Particle upRight, inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    float lateralRandom = randomA * lateralMultiplier;
+    float lateralRandom = random.x * lateralMultiplier;
     bool light = GetParticleDensity(type) < GetParticleDensity(AIR);
     MoveGasLaterally(type, light, upLeft, upRight, downLeft, downRight, lateralRandom);
 
     if (light) {
-        MoveGasUp(type, upLeft, upRight, downLeft, downRight, randomA, randomB);
+        MoveGasUp(type, upLeft, upRight, downLeft, downRight, random);
     } else {
-        MoveGasDown(type, upLeft, upRight, downLeft, downRight, randomA, randomB);
+        MoveGasDown(type, upLeft, upRight, downLeft, downRight, random);
     }
 }

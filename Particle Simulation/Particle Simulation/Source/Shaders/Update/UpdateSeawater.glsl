@@ -15,16 +15,16 @@ void VaporizeSeawater(inout Particle particle)
 }
 
 void VaporizeSeawater(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float vaporizeProbability = 0.25 * (
-        float(CanVaporizeSeawater(upLeft, randomB)) +
-        float(CanVaporizeSeawater(upRight, randomB)) +
-        float(CanVaporizeSeawater(downLeft, randomB)) +
-        float(CanVaporizeSeawater(downRight, randomB))
+        float(CanVaporizeSeawater(upLeft, random.y)) +
+        float(CanVaporizeSeawater(upRight, random.y)) +
+        float(CanVaporizeSeawater(downLeft, random.y)) +
+        float(CanVaporizeSeawater(downRight, random.y))
     );
 
-    if (randomA < vaporizeProbability)
+    if (random.x < vaporizeProbability)
     {
         VaporizeSeawater(upLeft);
         VaporizeSeawater(upRight);
@@ -34,8 +34,8 @@ void VaporizeSeawater(inout Particle upLeft, inout Particle upRight,
 }
 
 void UpdateSeawater(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    VaporizeSeawater(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MoveLiquid(SEAWATER, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    VaporizeSeawater(upLeft, upRight, downLeft, downRight, random);
+    MoveLiquid(SEAWATER, upLeft, upRight, downLeft, downRight, random);
 }

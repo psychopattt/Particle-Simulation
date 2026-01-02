@@ -15,16 +15,16 @@ void VaporizeWater(inout Particle particle)
 }
 
 void VaporizeWater(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float vaporizeProbability = 0.25 * (
-        float(CanVaporizeWater(upLeft, randomB)) +
-        float(CanVaporizeWater(upRight, randomB)) +
-        float(CanVaporizeWater(downLeft, randomB)) +
-        float(CanVaporizeWater(downRight, randomB))
+        float(CanVaporizeWater(upLeft, random.y)) +
+        float(CanVaporizeWater(upRight, random.y)) +
+        float(CanVaporizeWater(downLeft, random.y)) +
+        float(CanVaporizeWater(downRight, random.y))
     );
 
-    if (randomA < vaporizeProbability)
+    if (random.x < vaporizeProbability)
     {
         VaporizeWater(upLeft);
         VaporizeWater(upRight);
@@ -34,8 +34,8 @@ void VaporizeWater(inout Particle upLeft, inout Particle upRight,
 }
 
 void UpdateWater(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    VaporizeWater(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MoveLiquid(WATER, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    VaporizeWater(upLeft, upRight, downLeft, downRight, random);
+    MoveLiquid(WATER, upLeft, upRight, downLeft, downRight, random);
 }

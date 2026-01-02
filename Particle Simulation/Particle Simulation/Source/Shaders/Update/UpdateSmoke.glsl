@@ -18,9 +18,9 @@ void DissipateSmoke(inout Particle upLeft, inout Particle upRight, float random)
     }
 }
 
-void UpdateSmoke(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateSmoke(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    DissipateSmoke(upLeft, upRight, randomC);
-    MoveGas(SMOKE, 1.6, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    DissipateSmoke(upLeft, upRight, random.z);
+    MoveGas(SMOKE, 1.6, upLeft, upRight, downLeft, downRight, random);
 }

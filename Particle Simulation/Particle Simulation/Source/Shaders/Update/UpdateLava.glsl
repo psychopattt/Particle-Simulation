@@ -32,19 +32,19 @@ bool SolidifyLava(inout Particle particle, float probability, float random)
 }
 
 void SolidifyLava(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomC)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float probability = 0.25 * (
-        float(CanSolidifyLava(upLeft, randomC)) +
-        float(CanSolidifyLava(upRight, randomC)) +
-        float(CanSolidifyLava(downLeft, randomC)) +
-        float(CanSolidifyLava(downRight, randomC))
+        float(CanSolidifyLava(upLeft, random.z)) +
+        float(CanSolidifyLava(upRight, random.z)) +
+        float(CanSolidifyLava(downLeft, random.z)) +
+        float(CanSolidifyLava(downRight, random.z))
     );
 
-    bool solidified = SolidifyLava(upLeft, probability * 0.25, randomA);
-    solidified = solidified || SolidifyLava(upRight, probability * 0.5, randomA);
-    solidified = solidified || SolidifyLava(downLeft, probability * 0.75, randomA);
-    solidified = solidified || SolidifyLava(downRight, probability, randomA);
+    bool solid = SolidifyLava(upLeft, probability * 0.25, random.x);
+    solid = solid || SolidifyLava(upRight, probability * 0.5, random.x);
+    solid = solid || SolidifyLava(downLeft, probability * 0.75, random.x);
+    solid = solid || SolidifyLava(downRight, probability, random.x);
 }
 
 void UpdateLavaShade(inout Particle particle, float random)
@@ -72,27 +72,27 @@ void MeltParticleIntoLava(inout Particle particle, float random)
 }
 
 void MeltParticlesIntoLava(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float meltProbability = 0.01 * (
         float(upLeft.type == LAVA) + float(upRight.type == LAVA) +
         float(downLeft.type == LAVA) + float(downRight.type == LAVA)
     );
 
-    if (randomB < meltProbability)
+    if (random.y < meltProbability)
     {
-        MeltParticleIntoLava(upLeft, randomA);
-        MeltParticleIntoLava(upRight, randomA);
-        MeltParticleIntoLava(downLeft, randomA);
-        MeltParticleIntoLava(downRight, randomA);
+        MeltParticleIntoLava(upLeft, random.x);
+        MeltParticleIntoLava(upRight, random.x);
+        MeltParticleIntoLava(downLeft, random.x);
+        MeltParticleIntoLava(downRight, random.x);
     }
 }
 
-void UpdateLava(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateLava(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    SolidifyLava(upLeft, upRight, downLeft, downRight, randomA, randomC);
-    UpdateLavaShade(upLeft, upRight, downLeft, downRight, randomA);
-    MeltParticlesIntoLava(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MoveLiquid(LAVA, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    SolidifyLava(upLeft, upRight, downLeft, downRight, random);
+    UpdateLavaShade(upLeft, upRight, downLeft, downRight, random.x);
+    MeltParticlesIntoLava(upLeft, upRight, downLeft, downRight, random);
+    MoveLiquid(LAVA, upLeft, upRight, downLeft, downRight, random);
 }

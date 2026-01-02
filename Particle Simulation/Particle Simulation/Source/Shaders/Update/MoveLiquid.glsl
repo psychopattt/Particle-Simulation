@@ -41,9 +41,9 @@ void MoveLiquidLaterally(int type, inout Particle upLeft, inout Particle upRight
 }
 
 void MoveLiquid(int type, inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     bvec2 fell = bvec2(false);
-    MoveLiquidDown(type, upLeft, upRight, downLeft, downRight, fell, randomA);
-    MoveLiquidLaterally(type, upLeft, upRight, downLeft, downRight, fell, randomB);
+    MoveLiquidDown(type, upLeft, upRight, downLeft, downRight, fell, random.x);
+    MoveLiquidLaterally(type, upLeft, upRight, downLeft, downRight, fell, random.y);
 }

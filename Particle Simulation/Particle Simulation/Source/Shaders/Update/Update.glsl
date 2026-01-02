@@ -82,28 +82,28 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateAmmonia.glsl"
 #include "UpdateChlorine.glsl"
 
-void UpdateParticles(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
-    inout Particle downRight, float randomA, float randomB, float randomC)
+void UpdateParticles(inout Particle upLeft, inout Particle upRight,
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    UpdateSand(upLeft, upRight, downLeft, downRight, randomA);
-    UpdateWater(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    UpdateSmoke(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateFire(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateStone(upLeft, upRight, downLeft, downRight, randomA);
-    UpdatePetrol(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    UpdateSteam(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateSeawater(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    UpdateLava(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateIce(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateSalt(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateSawdust(upLeft, upRight, downLeft, downRight, randomA);
-    UpdateAcid(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateVine(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
-    UpdateRust(upLeft, upRight, downLeft, downRight, randomA);
-    UpdateIron(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    UpdateMethane(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    UpdateAmmonia(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    UpdateChlorine(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
+    UpdateSand(upLeft, upRight, downLeft, downRight, random);
+    UpdateWater(upLeft, upRight, downLeft, downRight, random);
+    UpdateSmoke(upLeft, upRight, downLeft, downRight, random);
+    UpdateFire(upLeft, upRight, downLeft, downRight, random);
+    UpdateStone(upLeft, upRight, downLeft, downRight, random);
+    UpdatePetrol(upLeft, upRight, downLeft, downRight, random);
+    UpdateSteam(upLeft, upRight, downLeft, downRight, random);
+    UpdateSeawater(upLeft, upRight, downLeft, downRight, random);
+    UpdateLava(upLeft, upRight, downLeft, downRight, random);
+    UpdateIce(upLeft, upRight, downLeft, downRight, random);
+    UpdateSalt(upLeft, upRight, downLeft, downRight, random);
+    UpdateSawdust(upLeft, upRight, downLeft, downRight, random);
+    UpdateAcid(upLeft, upRight, downLeft, downRight, random);
+    UpdateVine(upLeft, upRight, downLeft, downRight, random);
+    UpdateRust(upLeft, upRight, downLeft, downRight, random);
+    UpdateIron(upLeft, upRight, downLeft, downRight, random);
+    UpdateMethane(upLeft, upRight, downLeft, downRight, random);
+    UpdateAmmonia(upLeft, upRight, downLeft, downRight, random);
+    UpdateChlorine(upLeft, upRight, downLeft, downRight, random);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
@@ -145,10 +145,12 @@ void main()
     Particle downRight = GetParticle(evenPosition + ivec2(1, 0));
     Particle downLeft = GetParticle(evenPosition);
 
-    float randomA = HashVec2(evenPosition);
-    float randomB = HashVec2(evenPosition + randomA);
-    float randomC = HashVec2(evenPosition + randomB);
+    float randomX = HashVec2(evenPosition);
+    float randomY = HashVec2(evenPosition + randomX);
+    float randomZ = HashVec2(evenPosition + randomY);
+    float randomW = HashVec2(evenPosition + randomZ);
+    vec4 random = vec4(randomX, randomY, randomZ, randomW);
 
-    UpdateParticles(upLeft, upRight, downLeft, downRight, randomA, randomB, randomC);
+    UpdateParticles(upLeft, upRight, downLeft, downRight, random);
     SetUpdatedParticle(position, offset, upLeft, upRight, downLeft, downRight);
 }

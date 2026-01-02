@@ -1,5 +1,5 @@
 void UpdatePetrol(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float randomA, float randomB)
+    inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    MoveLiquid(PETROL, upLeft, upRight, downLeft, downRight, randomA, randomB);
+    MoveLiquid(PETROL, upLeft, upRight, downLeft, downRight, random);
 }
