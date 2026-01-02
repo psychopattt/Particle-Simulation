@@ -29,33 +29,9 @@ void DissolveSalt(inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveSaltSide(inout Particle moving, Particle side,
-    inout Particle bottom, inout Particle diagonal, float random)
-{
-    if (moving.type == SALT)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-        {
-            SwapParticles(moving, bottom);
-        }
-        else if (CanMoveParticle(moving, side, random) &&
-            CanMoveParticle(moving, diagonal, random))
-        {
-            SwapParticles(moving, diagonal);
-        }
-    }
-}
-
-void MoveSalt(inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, float random)
-{
-    MoveSaltSide(upLeft, upRight, downLeft, downRight, random);
-    MoveSaltSide(upRight, upLeft, downRight, downLeft, random);
-}
-
 void UpdateSalt(inout Particle upLeft, inout Particle upRight, inout Particle downLeft,
     inout Particle downRight, float randomA, float randomB, float randomC)
 {
     DissolveSalt(upLeft, upRight, downLeft, downRight, randomA, randomB);
-    MoveSalt(upLeft, upRight, downLeft, downRight, randomC);
+    MoveSolid(SALT, 1, upLeft, upRight, downLeft, downRight, randomC);
 }

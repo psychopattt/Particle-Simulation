@@ -1,25 +1,5 @@
-void MoveStoneSide(inout Particle moving, Particle side,
-    inout Particle bottom, inout Particle diagonal, float random)
-{
-    float diagonalRandom = random * 10;
-
-    if (moving.type == STONE)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-        {
-            SwapParticles(moving, bottom);
-        }
-        else if (CanMoveParticle(moving, side, diagonalRandom) &&
-            CanMoveParticle(moving, diagonal, diagonalRandom))
-        {
-            SwapParticles(moving, diagonal);
-        }
-    }
-}
-
 void UpdateStone(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    MoveStoneSide(upLeft, upRight, downLeft, downRight, random);
-    MoveStoneSide(upRight, upLeft, downRight, downLeft, random);
+    MoveSolid(STONE, 10, upLeft, upRight, downLeft, downRight, random);
 }

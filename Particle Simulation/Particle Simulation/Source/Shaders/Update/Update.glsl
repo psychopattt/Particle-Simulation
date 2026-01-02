@@ -60,6 +60,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 
 #include "MoveGas.glsl"
 #include "MoveLiquid.glsl"
+#include "MoveSolid.glsl"
 
 #include "UpdateSand.glsl"
 #include "UpdateWater.glsl"
