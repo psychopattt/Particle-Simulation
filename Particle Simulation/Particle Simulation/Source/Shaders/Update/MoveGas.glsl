@@ -1,21 +1,26 @@
-void MoveGasLaterally(int type, bool light,
-    inout Particle left, inout Particle right, float random)
+bool CanMoveGasParticle(Particle origin, Particle target, float random)
 {
-    Particle originA = light ? right : left;
-    Particle originB = light ? left : right;
+    float densityDelta = target.density - origin.density;
+    float moveProbability = min(0.9, densityDelta / target.density);
+    bool mixable = origin.phase == PHASE_GAS && target.phase == PHASE_GAS;
 
-    if ((originA.type == type && CanMoveParticle(left, right, random)) ||
-        (originB.type == type && CanMoveParticle(right, left, random)))
+    return mixable && random < moveProbability;
+}
+
+void MoveGasLaterally(int type, inout Particle left, inout Particle right, float random)
+{
+    if ((left.type == type && CanMoveGasParticle(left, right, random)) ||
+        (right.type == type && CanMoveGasParticle(right, left, random)))
     {
         SwapParticles(left, right);
     }
 }
 
-void MoveGasLaterally(int type, bool light, inout Particle upLeft, inout Particle upRight,
+void MoveGasLaterally(int type, inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, float random)
 {
-    MoveGasLaterally(type, light, upLeft, upRight, random);
-    MoveGasLaterally(type, light, downLeft, downRight, random);
+    MoveGasLaterally(type, upLeft, upRight, random);
+    MoveGasLaterally(type, downLeft, downRight, random);
 }
 
 void MoveGasUp(int type, inout Particle moving,
@@ -23,9 +28,9 @@ void MoveGasUp(int type, inout Particle moving,
 {
     if (moving.type == type)
     {
-        if (CanMoveParticle(top, moving, random))
+        if (CanMoveGasParticle(moving, top, random))
             SwapParticles(moving, top);
-        else if (CanMoveParticle(diagonal, moving, random))
+        else if (CanMoveGasParticle(moving, diagonal, random))
             SwapParticles(moving, diagonal);
     }
 }
@@ -45,43 +50,10 @@ void MoveGasUp(int type, inout Particle upLeft, inout Particle upRight,
     }
 }
 
-void MoveGasDown(int type, inout Particle moving,
-    inout Particle bottom, inout Particle diagonal, float random)
-{
-    if (moving.type == type)
-    {
-        if (CanMoveParticle(moving, bottom, random))
-            SwapParticles(moving, bottom);
-        else if (CanMoveParticle(moving, diagonal, random))
-            SwapParticles(moving, diagonal);
-    }
-}
-
-void MoveGasDown(int type, inout Particle upLeft, inout Particle upRight,
-    inout Particle downLeft, inout Particle downRight, vec4 random)
-{
-    if (random.y < 0.5)
-    {
-        MoveGasDown(type, upLeft, downLeft, downRight, random.x);
-        MoveGasDown(type, upRight, downRight, downLeft, random.x);
-    }
-    else
-    {
-        MoveGasDown(type, upRight, downRight, downLeft, random.x);
-        MoveGasDown(type, upLeft, downLeft, downRight, random.x);
-    }
-}
-
 void MoveGas(int type, float lateralMultiplier, inout Particle upLeft,
     inout Particle upRight, inout Particle downLeft, inout Particle downRight, vec4 random)
 {
     float lateralRandom = random.x * lateralMultiplier;
-    bool light = GetParticleDensity(type) < GetParticleDensity(AIR);
-    MoveGasLaterally(type, light, upLeft, upRight, downLeft, downRight, lateralRandom);
-
-    if (light) {
-        MoveGasUp(type, upLeft, upRight, downLeft, downRight, random);
-    } else {
-        MoveGasDown(type, upLeft, upRight, downLeft, downRight, random);
-    }
+    MoveGasLaterally(type, upLeft, upRight, downLeft, downRight, lateralRandom);
+    MoveGasUp(type, upLeft, upRight, downLeft, downRight, random);
 }

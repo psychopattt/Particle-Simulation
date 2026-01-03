@@ -62,6 +62,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "MoveLiquid.glsl"
 #include "MoveSolid.glsl"
 
+#include "UpdateAir.glsl"
 #include "UpdateSand.glsl"
 #include "UpdateWater.glsl"
 #include "UpdateSmoke.glsl"
@@ -85,6 +86,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, vec4 random)
 {
+    UpdateAir(upLeft, upRight, downLeft, downRight, random);
     UpdateSand(upLeft, upRight, downLeft, downRight, random);
     UpdateWater(upLeft, upRight, downLeft, downRight, random);
     UpdateSmoke(upLeft, upRight, downLeft, downRight, random);
