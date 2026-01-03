@@ -18,7 +18,7 @@ void MoveSolid(int type, inout Particle moving, Particle side, inout Particle bo
 void MoveSolid(int type, float diagonalMultiplier, inout Particle upLeft,
     inout Particle upRight, inout Particle downLeft, inout Particle downRight, vec4 random)
 {
-    float diagonalRandom = random.x * diagonalMultiplier;
+    float diagonalRandom = diagonalMultiplier < 0 ? 1 : random.x * diagonalMultiplier;
     MoveSolid(type, upLeft, upRight, downLeft, downRight, random.x, diagonalRandom);
     MoveSolid(type, upRight, upLeft, downRight, downLeft, random.x, diagonalRandom);
 }
