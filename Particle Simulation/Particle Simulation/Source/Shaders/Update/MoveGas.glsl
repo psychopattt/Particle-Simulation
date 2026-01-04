@@ -1,4 +1,4 @@
-bool CanMoveGasParticle(Particle origin, Particle target, float random)
+bool CanGasMoveParticle(Particle origin, Particle target, float random)
 {
     float densityDelta = target.density - origin.density;
     float moveProbability = min(0.9, densityDelta / target.density);
@@ -9,8 +9,8 @@ bool CanMoveGasParticle(Particle origin, Particle target, float random)
 
 void MoveGasLaterally(int type, inout Particle left, inout Particle right, float random)
 {
-    if ((left.type == type && CanMoveGasParticle(left, right, random)) ||
-        (right.type == type && CanMoveGasParticle(right, left, random)))
+    if ((left.type == type && CanGasMoveParticle(left, right, random)) ||
+        (right.type == type && CanGasMoveParticle(right, left, random)))
     {
         SwapParticles(left, right);
     }
@@ -28,9 +28,9 @@ void MoveGasUp(int type, inout Particle moving,
 {
     if (moving.type == type)
     {
-        if (CanMoveGasParticle(moving, top, random))
+        if (CanGasMoveParticle(moving, top, random))
             SwapParticles(moving, top);
-        else if (CanMoveGasParticle(moving, diagonal, random))
+        else if (CanGasMoveParticle(moving, diagonal, random))
             SwapParticles(moving, diagonal);
     }
 }
