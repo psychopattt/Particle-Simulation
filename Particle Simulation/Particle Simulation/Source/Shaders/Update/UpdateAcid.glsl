@@ -18,6 +18,7 @@ bool IsDissolvableByAcid(Particle particle, float random)
         case IRON: return random < 0.006;
         case METHANE: return random < 0.002;
         case AMMONIA: return random < 0.008;
+        case WAX: return random < 0.05;
         default: return false;
     }
 }

@@ -20,6 +20,7 @@
 #define METHANE 19
 #define AMMONIA 20
 #define CHLORINE 21
+#define WAX 22
 
 #define PHASE_STATIC 0
 #define PHASE_SOLID 1
@@ -52,6 +53,7 @@ int GetParticlePhase(int type)
         case METHANE: return PHASE_GAS;
         case AMMONIA: return PHASE_GAS;
         case CHLORINE: return PHASE_GAS;
+        case WAX: return PHASE_STATIC;
         default: return PHASE_STATIC;
     }
 }
@@ -82,6 +84,7 @@ float GetParticleDensity(int type)
         case METHANE: return 0.717;
         case AMMONIA: return 0.769;
         case CHLORINE: return 3.2;
+        case WAX: return 900;
         default: return 1;
     }
 }
