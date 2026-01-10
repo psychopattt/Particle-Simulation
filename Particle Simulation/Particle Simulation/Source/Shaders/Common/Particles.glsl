@@ -79,7 +79,7 @@ float GetParticleDensity(int type)
         case SAWDUST: return 1471;
         case ACID: return 1020;
         case VINE: return 342;
-        case RUST: return 5745;
+        case RUST: return 5250;
         case IRON: return 7874;
         case METHANE: return 0.717;
         case AMMONIA: return 0.769;
