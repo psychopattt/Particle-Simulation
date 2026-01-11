@@ -67,7 +67,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateWater.glsl"
 #include "UpdateSmoke.glsl"
 #include "UpdateFire.glsl"
-#include "UpdateStone.glsl"
+#include "UpdateRock.glsl"
 #include "UpdatePetrol.glsl"
 #include "UpdateSteam.glsl"
 #include "UpdateSeawater.glsl"
@@ -93,7 +93,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     UpdateWater(upLeft, upRight, downLeft, downRight, random);
     UpdateSmoke(upLeft, upRight, downLeft, downRight, random);
     UpdateFire(upLeft, upRight, downLeft, downRight, random);
-    UpdateStone(upLeft, upRight, downLeft, downRight, random);
+    UpdateRock(upLeft, upRight, downLeft, downRight, random);
     UpdatePetrol(upLeft, upRight, downLeft, downRight, random);
     UpdateSteam(upLeft, upRight, downLeft, downRight, random);
     UpdateSeawater(upLeft, upRight, downLeft, downRight, random);

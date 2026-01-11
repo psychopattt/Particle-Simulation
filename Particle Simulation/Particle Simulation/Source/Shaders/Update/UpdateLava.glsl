@@ -14,7 +14,7 @@ bool CanMeltIntoLava(Particle particle, float random)
 {
     switch (particle.type)
     {
-        case STONE: return random < 0.12;
+        case ROCK: return random < 0.12;
         case SALT: return random < 0.17;
         case RUST: return random < 0.06;
         default: return false;
@@ -26,7 +26,7 @@ bool SolidifyLava(inout Particle particle, float probability, float random)
     bool solidified = particle.type == LAVA && random < probability;
 
     if (solidified)
-        particle = CreateParticle(STONE, particle.shade);
+        particle = CreateParticle(ROCK, particle.shade);
 
     return solidified;
 }

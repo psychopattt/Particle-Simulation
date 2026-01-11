@@ -5,7 +5,7 @@
 #define WOOD 4
 #define SMOKE 5
 #define FIRE 6
-#define STONE 7
+#define ROCK 7
 #define PETROL 8
 #define STEAM 9
 #define SEAWATER 10
@@ -39,7 +39,7 @@ int GetParticlePhase(int type)
         case WOOD: return PHASE_STATIC;
         case SMOKE: return PHASE_GAS;
         case FIRE: return PHASE_STATIC;
-        case STONE: return PHASE_SOLID;
+        case ROCK: return PHASE_SOLID;
         case PETROL: return PHASE_LIQUID;
         case STEAM: return PHASE_GAS;
         case SEAWATER: return PHASE_LIQUID;
@@ -71,7 +71,7 @@ float GetParticleDensity(int type)
         case WOOD: return 685;
         case SMOKE: return 0.81;
         case FIRE: return 1.62;
-        case STONE: return 2600;
+        case ROCK: return 2600;
         case PETROL: return 755;
         case STEAM: return 0.59;
         case SEAWATER: return 1023.6;
