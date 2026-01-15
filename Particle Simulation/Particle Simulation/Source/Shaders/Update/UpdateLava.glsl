@@ -68,7 +68,10 @@ void UpdateLavaShade(inout Particle upLeft, inout Particle upRight,
 void MeltParticleIntoLava(inout Particle particle, float random)
 {
     if (CanMeltIntoLava(particle, random))
+    {
         particle = CreateParticle(LAVA, particle.shade);
+        UpdateLavaShade(particle, random);
+    }
 }
 
 void MeltParticlesIntoLava(inout Particle upLeft, inout Particle upRight,
