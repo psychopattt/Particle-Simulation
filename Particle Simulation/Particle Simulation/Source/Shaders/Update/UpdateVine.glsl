@@ -27,6 +27,7 @@ bool CanSupportVine(Particle particle, float random)
         case IRON: return random < 0.12;
         case AMMONIA: return random < 0.21;
         case WAX: return random < 0.12;
+        case CEMENT: return random < 0.12;
         default: return false;
     }
 }

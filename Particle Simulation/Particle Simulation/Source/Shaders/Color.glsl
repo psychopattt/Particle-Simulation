@@ -42,6 +42,7 @@ vec3 GetParticleColor(Particle particle)
         case CHLORINE: return particle.shade * 0.014 + vec3(0.54, 0.56, 0.1);
         case WAX: return vec3(vec2(particle.shade * -0.015 + 0.7), 0.5);
         case MERCURY: return particle.shade * 0.015 + vec3(0.4, 0.41, 0.42);
+        case CEMENT: return particle.shade * 0.028 + vec3(0.65, 0.65, 0.63);
         default: return vec3(1, 0, 1);
     }
 }
