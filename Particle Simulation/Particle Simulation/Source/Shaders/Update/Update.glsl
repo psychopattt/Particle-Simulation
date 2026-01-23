@@ -85,6 +85,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateWax.glsl"
 #include "UpdateMercury.glsl"
 #include "UpdateCement.glsl"
+#include "UpdateCloner.glsl"
 
 void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, vec4 random)
@@ -112,6 +113,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     UpdateWax(upLeft, upRight, downLeft, downRight, random);
     UpdateMercury(upLeft, upRight, downLeft, downRight, random);
     UpdateCement(upLeft, upRight, downLeft, downRight, random);
+    UpdateCloner(upLeft, upRight, downLeft, downRight, random);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
