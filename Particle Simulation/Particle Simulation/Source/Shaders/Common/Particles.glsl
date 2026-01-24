@@ -24,6 +24,7 @@
 #define MERCURY 23
 #define CEMENT 24
 #define CLONER 25
+#define RANDOM 26
 
 #define PHASE_STATIC 0
 #define PHASE_SOLID 1
@@ -60,6 +61,7 @@ int GetParticlePhase(int type)
         case MERCURY: return PHASE_LIQUID;
         case CEMENT: return PHASE_LIQUID;
         case CLONER: return PHASE_STATIC;
+        case RANDOM: return PHASE_STATIC;
         default: return PHASE_STATIC;
     }
 }
@@ -94,6 +96,7 @@ float GetParticleDensity(int type)
         case MERCURY: return 13546;
         case CEMENT: return 1400;
         case CLONER: return 2000;
+        case RANDOM: return 1000;
         default: return 1;
     }
 }

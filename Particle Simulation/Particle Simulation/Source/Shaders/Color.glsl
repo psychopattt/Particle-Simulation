@@ -44,6 +44,7 @@ vec3 GetParticleColor(Particle particle)
         case MERCURY: return particle.shade * 0.015 + vec3(0.4, 0.41, 0.42);
         case CEMENT: return particle.shade * 0.028 + vec3(0.65, 0.65, 0.63);
         case CLONER: return vec3(0.5, 0.4, 0.06);
+        case RANDOM: return vec3(0.2, 0, 0.25);
         default: return vec3(1, 0, 1);
     }
 }

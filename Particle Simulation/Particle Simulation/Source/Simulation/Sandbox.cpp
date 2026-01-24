@@ -45,6 +45,7 @@ void Sandbox::InitializeShaders()
 	initShader->Execute();
 
 	updateShader = make_unique<ComputeShader>("Update", width, height);
+	updateShader->SetUniform("particleCount", static_cast<int>(ParticleType::ParticleCount));
 	updateShader->SetUniform("size", width, height);
 	updateShader->SetUniform("globalSeed", seed);
 

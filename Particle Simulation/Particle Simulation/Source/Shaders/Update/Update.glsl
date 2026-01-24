@@ -7,6 +7,7 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 uniform ivec2 size;
 uniform uint frame;
 uniform uint globalSeed;
+uniform int particleCount;
 
 layout(std430) restrict readonly buffer inputParticles {
     Particle InputParticles[];
@@ -86,6 +87,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateMercury.glsl"
 #include "UpdateCement.glsl"
 #include "UpdateCloner.glsl"
+#include "UpdateRandom.glsl"
 
 void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, vec4 random)
@@ -114,6 +116,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     UpdateMercury(upLeft, upRight, downLeft, downRight, random);
     UpdateCement(upLeft, upRight, downLeft, downRight, random);
     UpdateCloner(upLeft, upRight, downLeft, downRight, random);
+    UpdateRandom(upLeft, upRight, downLeft, downRight, random);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
