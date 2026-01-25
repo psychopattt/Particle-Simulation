@@ -35,7 +35,7 @@ bool CanQuenchFire(Particle particle, float random)
 void SpreadFire(inout Particle particle, float random)
 {
     if (CanCatchFire(particle, random))
-        particle = CreateParticle(FIRE, particle.shade);
+        particle = CreateParticle(FIRE, 0);
 }
 
 void SpreadFire(inout Particle upLeft, inout Particle upRight,
