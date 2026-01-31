@@ -25,6 +25,7 @@
 #define CEMENT 24
 #define CLONER 25
 #define RANDOM 26
+#define FOAM 27
 
 #define PHASE_STATIC 0
 #define PHASE_SOLID 1
@@ -62,6 +63,7 @@ int GetParticlePhase(int type)
         case CEMENT: return PHASE_LIQUID;
         case CLONER: return PHASE_STATIC;
         case RANDOM: return PHASE_STATIC;
+        case FOAM: return PHASE_LIQUID;
         default: return PHASE_STATIC;
     }
 }
@@ -97,6 +99,7 @@ float GetParticleDensity(int type)
         case CEMENT: return 1400;
         case CLONER: return 2000;
         case RANDOM: return 1000;
+        case FOAM: return 673.4;
         default: return 1;
     }
 }

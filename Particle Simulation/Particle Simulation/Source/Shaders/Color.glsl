@@ -45,6 +45,7 @@ vec3 GetParticleColor(Particle particle)
         case CEMENT: return particle.shade * 0.028 + vec3(0.65, 0.65, 0.63);
         case CLONER: return vec3(0.5, 0.4, 0.06);
         case RANDOM: return vec3(0.2, 0, 0.25);
+        case FOAM: return particle.shade * 0.0009 + vec3(0.6, 0.76, 0.63);
         default: return vec3(1, 0, 1);
     }
 }

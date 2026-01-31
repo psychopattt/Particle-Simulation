@@ -8,6 +8,7 @@ float GetWaxHeatAmount(Particle particle)
         case LAVA: return 0.08;
         case ICE: return -0.1;
         case WAX: return particle.shade < -1 ? 0.001 : -0.01;
+        case FOAM: return 0;
         default: return -0.01;
     }
 }
