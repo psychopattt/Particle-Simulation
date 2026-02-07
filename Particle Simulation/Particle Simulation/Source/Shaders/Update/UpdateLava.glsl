@@ -51,7 +51,7 @@ void SolidifyLava(inout Particle upLeft, inout Particle upRight,
 void UpdateLavaShade(inout Particle particle, float random)
 {
     if (particle.type == LAVA)
-        particle.shade = HashVec2(vec2(random, particle.shade)) - 0.5;
+        particle.shade = GenerateShade(random, particle.shade);
 }
 
 void UpdateLavaShade(inout Particle upLeft, inout Particle upRight,

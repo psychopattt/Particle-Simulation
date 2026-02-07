@@ -15,7 +15,7 @@ void DissolveFoam(inout Particle particle, float random)
     if (particle.type == FOAM)
     {
         int type = random > 0.18 ? AIR : (random > 0.01 ? SMOKE : AMMONIA);
-        float shade = HashVec2(vec2(random, particle.shade)) - 0.5;
+        float shade = GenerateShade(random, particle.shade);
         particle = CreateParticle(type, shade);
     }
 }

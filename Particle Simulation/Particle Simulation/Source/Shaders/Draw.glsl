@@ -45,6 +45,7 @@ void main()
     if (distance < drawRadius && writeable)
     {
         vec2 shadeSeed = distance * 1.1031 + position;
-        Particles[id] = CreateParticle(drawType, HashVec2(shadeSeed) - 0.5);
+        float shade = GenerateShade(shadeSeed.x, shadeSeed.y);
+        Particles[id] = CreateParticle(drawType, shade);
     }
 }

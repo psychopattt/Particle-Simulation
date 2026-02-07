@@ -9,3 +9,8 @@ float HashVec2(vec2 seed)
 {
     return HashVec3(vec3(globalSeed + frame, seed));
 }
+
+float GenerateShade(float seed1, float seed2)
+{
+    return HashVec2(vec2(seed1, seed2)) - 0.5;
+}

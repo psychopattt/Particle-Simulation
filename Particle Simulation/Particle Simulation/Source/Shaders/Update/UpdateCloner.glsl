@@ -5,7 +5,7 @@ void CloneParticle(Particle cloner, Particle origin, inout Particle target, vec4
 
     if (cloneable && replaceable)
     {
-        float shade = HashVec2(vec2(random)) - 0.5;
+        float shade = GenerateShade(random.x, random.y);
         target = CreateParticle(origin.type, shade);
     }
 }

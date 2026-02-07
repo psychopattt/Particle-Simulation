@@ -102,7 +102,7 @@ void QuenchFire(inout Particle upLeft, inout Particle upRight,
 void UpdateFireShade(inout Particle particle, float random)
 {
     if (particle.type == FIRE)
-        particle.shade = HashVec2(vec2(random, particle.shade)) - 0.5;
+        particle.shade = GenerateShade(random, particle.shade);
 }
 
 void UpdateFireShade(inout Particle upLeft, inout Particle upRight,

@@ -88,7 +88,7 @@ void SpreadVinePattern(Particle origin, inout Particle target,
         CanSupportVine(supportB, random);
 
     if (typesValid && supported)
-        target = CreateParticle(VINE, HashVec2(vec2(random, origin.shade)) - 0.5);
+        target = CreateParticle(VINE, GenerateShade(random, origin.shade));
 }
 
 void SpreadVine(inout Particle upLeft, inout Particle upRight,

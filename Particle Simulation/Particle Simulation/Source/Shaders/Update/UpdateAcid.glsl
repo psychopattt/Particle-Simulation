@@ -31,7 +31,7 @@ void DissolveParticleByAcid(inout Particle particle, float random)
     if (IsDissolvableByAcid(particle, random))
     {
         int type = IsDissolvableByAcid(particle, random * 8) ? SMOKE : AIR;
-        float shade = HashVec2(vec2(random, particle.shade)) - 0.5;
+        float shade = GenerateShade(random, particle.shade);
         particle = CreateParticle(type, shade);
     }
 }
