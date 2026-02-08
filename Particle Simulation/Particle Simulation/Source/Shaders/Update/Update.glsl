@@ -121,8 +121,8 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     UpdateFoam(upLeft, upRight, downLeft, downRight, random);
 }
 
-void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft, Particle upRight,
-    Particle downLeft, Particle downRight)
+void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft,
+    Particle upRight, Particle downLeft, Particle downRight)
 {
     uint globalParticleId = GetPositionId(position);
     ivec2 localParticlePosition = (position + offset) & 1;
@@ -160,12 +160,7 @@ void main()
     Particle downRight = GetParticle(evenPosition + ivec2(1, 0));
     Particle downLeft = GetParticle(evenPosition);
 
-    float randomX = HashVec2(evenPosition);
-    float randomY = HashVec2(evenPosition + randomX);
-    float randomZ = HashVec2(evenPosition + randomY);
-    float randomW = HashVec2(evenPosition + randomZ);
-    vec4 random = vec4(randomX, randomY, randomZ, randomW);
-
+    vec4 random = GenerateNormalizedRandom(evenPosition.x, evenPosition.y);
     UpdateParticles(upLeft, upRight, downLeft, downRight, random);
     SetUpdatedParticle(position, offset, upLeft, upRight, downLeft, downRight);
 }

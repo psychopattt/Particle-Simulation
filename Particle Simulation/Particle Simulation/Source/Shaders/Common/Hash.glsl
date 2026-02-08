@@ -1,17 +1,35 @@
-float HashVec3(vec3 seed)
+uvec4 PCG4D(uvec4 seed)
 {
-    seed = fract(seed * 0.1031);
-    seed += dot(seed, seed.zyx + 33.33);
-    return fract((seed.x + seed.y) * seed.z);
+    seed = seed * 1664525u + 1013904223u;
+    seed.x += seed.y * seed.w;
+    seed.y += seed.z * seed.x;
+    seed.z += seed.x * seed.y;
+    seed.w += seed.y * seed.z;
+    seed ^= seed >> 16u;
+    seed.x += seed.y * seed.w;
+    seed.y += seed.z * seed.x;
+    seed.z += seed.x * seed.y;
+    seed.w += seed.y * seed.z;
+
+    return seed;
 }
 
-float HashVec2(vec2 seed)
+uvec4 GenerateRandom(float seed1, float seed2)
 {
-    float frameSeed = mod(globalSeed + frame, 200000);
-    return HashVec3(vec3(frameSeed, seed));
+    uint seedX = globalSeed + frame;
+    uint seedY = floatBitsToUint(seed1);
+    uint seedZ = floatBitsToUint(seed2);
+    uint seedW = seedY ^ seedZ;
+
+    return PCG4D(uvec4(seedX, seedY, seedZ, seedW));
+}
+
+vec4 GenerateNormalizedRandom(float seed1, float seed2)
+{
+    return vec4(GenerateRandom(seed1, seed2)) * (1 / float(0xffffffffu));
 }
 
 float GenerateShade(float seed1, float seed2)
 {
-    return HashVec2(vec2(seed1, seed2)) - 0.5;
+    return float(GenerateRandom(seed1, seed2)) * (1 / float(0xffffffffu)) - 0.5;
 }
