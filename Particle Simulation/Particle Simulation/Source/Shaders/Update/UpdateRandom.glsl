@@ -2,7 +2,7 @@ void RandomizeParticle(inout Particle particle, float random)
 {
     if (particle.type == RANDOM)
     {
-        int type = int(particleCount * random);
+        int type = min(particleCount - 1, int(particleCount * random));
         particle = CreateParticle(type, particle.shade);
     }
 }
