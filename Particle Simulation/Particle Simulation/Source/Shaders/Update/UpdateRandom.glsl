@@ -1,9 +1,22 @@
+bool IsRandomizable(int particleType)
+{
+    switch (particleType)
+    {
+        case WALL: return false;
+        case CLONER: return false;
+        case RANDOM: return false;
+        default: return true;
+    }
+}
+
 void RandomizeParticle(inout Particle particle, float random)
 {
     if (particle.type == RANDOM)
     {
         int type = min(particleCount - 1, int(particleCount * random));
-        particle = CreateParticle(type, particle.shade);
+
+        if (IsRandomizable(type))
+            particle = CreateParticle(type, particle.shade);
     }
 }
 
