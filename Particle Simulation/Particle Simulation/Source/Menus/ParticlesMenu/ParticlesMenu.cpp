@@ -22,7 +22,11 @@ void ParticlesMenu::Render()
 		return;
 
 	SetNextWindowPos(ImVec2(530, 10), ImGuiCond_FirstUseEver);
-	SetNextWindowSize(ImVec2(500, -1), ImGuiCond_FirstUseEver);
+	SetNextWindowSize(ImVec2(740, -1), ImGuiCond_FirstUseEver);
+
+#if DEBUG
+	SetNextWindowSize(ImVec2(530, -1), ImGuiCond_FirstUseEver);
+#endif
 
 	if (Begin("Particles", &SandboxSettings::ShowParticles, ImGuiWindowFlags_NoNavInputs))
 	{
