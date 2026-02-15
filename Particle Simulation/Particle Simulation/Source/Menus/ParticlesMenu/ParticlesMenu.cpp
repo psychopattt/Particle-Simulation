@@ -1,8 +1,10 @@
 #include "ParticlesMenu.h"
 
+#include <algorithm>
+#include <cstring>
+
 #include "imgui/imgui.h"
 
-#include "Settings/Particles.h"
 #include "Settings/DrawSettings.h"
 #include "Settings/SandboxSettings.h"
 
@@ -10,10 +12,20 @@ using namespace ImGui;
 
 void ParticlesMenu::Initialize()
 {
-	particleCount = static_cast<int>(ParticleType::ParticleCount);
-
 	if (ImGuiMouseButton_COUNT < DrawSettings::MouseButtonCount)
 		DrawSettings::MouseButtonCount = ImGuiMouseButton_COUNT;
+
+	SortParticles();
+}
+
+void ParticlesMenu::SortParticles()
+{
+	for (int particleId = 0; particleId < particleCount; particleId++)
+		sortedParticleIds[particleId] = particleId;
+
+	std::sort(sortedParticleIds, sortedParticleIds + particleCount, [](int i, int j) {
+		return strcmp(ParticleLabels[i], ParticleLabels[j]) < 0;
+	});
 }
 
 void ParticlesMenu::Render()
@@ -42,19 +54,19 @@ void ParticlesMenu::Render()
 void ParticlesMenu::RenderParticles()
 {
 	BeginDisabled();
-	const char* label = ParticleLabels[0];
+	const char* label = ParticleLabels[sortedParticleIds[0]];
 	float itemWidth = CalcTextSize(label).x;
 	float maxWindowPositionX = GetCursorScreenPos().x + GetContentRegionAvail().x;
 	lastHoveredParticle = hoveredParticle;
 	hoveredParticle = -1;
 
-	for (int particleId = 0; particleId < particleCount; particleId++)
+	for (int particleIndex = 0; particleIndex < particleCount; particleIndex++)
 	{
-		RenderParticle(particleId, label, itemWidth);
+		RenderParticle(sortedParticleIds[particleIndex], label, itemWidth);
 
-		if (particleId + 1 < particleCount)
+		if (particleIndex + 1 < particleCount)
 		{
-			label = ParticleLabels[particleId + 1];
+			label = ParticleLabels[sortedParticleIds[particleIndex + 1]];
 			itemWidth = CalcTextSize(label).x;
 			float nextItemPositionX = GetItemRectMax().x + itemPadding + itemWidth;
 
