@@ -120,7 +120,7 @@ void ParticlesMenu::UpdateParticleSelection(int particleId)
 
 	for (int button = 0; button < DrawSettings::MouseButtonCount; button++)
 	{
-		if (IsMouseReleased(button))
+		if (IsMouseClicked(button))
 		{
 			SwapParticleButton(particleId, button);
 			break;
