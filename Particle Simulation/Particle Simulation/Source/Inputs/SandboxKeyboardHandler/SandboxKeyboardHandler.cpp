@@ -8,7 +8,7 @@
 void SandboxKeyboardHandler::HandleKeyboard(GLFWwindow* window,
 	int key, int scanCode, int action, int mods)
 {
-	if (!ImGui::GetIO().WantCaptureKeyboard)
+	if (!ImGui::GetIO().WantTextInput)
 	{
 		ApplyDrawMode(key, action);
 	}
