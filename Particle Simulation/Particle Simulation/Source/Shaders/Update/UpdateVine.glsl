@@ -16,20 +16,20 @@ bool CanSupportVine(Particle particle, float random)
 {
     switch (particle.type)
     {
-        case SAND: return random < 0.12;
+        case SAND: return random < 0.1;
         case WATER: return random < 0.18;
         case WALL: return random < 0.12;
         case WOOD: return random < 0.13;
-        case ROCK: return random < 0.12;
+        case ROCK: return random < 0.125;
         case ICE: return random < 0.04;
-        case SAWDUST: return random < 0.13;
-        case RUST: return random < 0.12;
-        case IRON: return random < 0.12;
+        case SAWDUST: return random < 0.135;
+        case RUST: return random < 0.105;
+        case IRON: return random < 0.1;
         case AMMONIA: return random < 0.21;
         case WAX: return random < 0.12;
         case CEMENT: return random < 0.12;
-        case FOAM: return random < 0.12;
-        case BRICK: return random < 0.12;
+        case FOAM: return random < 0.11;
+        case BRICK: return random < 0.125;
         default: return false;
     }
 }
