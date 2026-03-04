@@ -36,7 +36,7 @@ void main()
     ivec2 position = ivec2(gl_GlobalInvocationID.xy);
 
     if (position.x >= size.x || position.y >= size.y)
-		return;
+        return;
 
     uint id = position.y * size.x + position.x;
     float distance = LineDistance(lastPosition, currentPosition, position);

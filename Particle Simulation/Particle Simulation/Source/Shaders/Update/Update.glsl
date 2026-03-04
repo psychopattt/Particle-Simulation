@@ -152,7 +152,7 @@ void main()
     ivec2 position = ivec2(gl_GlobalInvocationID.xy);
 
     if (position.x >= size.x || position.y >= size.y)
-		return;
+        return;
 
     ivec2 offset = GetMargolusOffset();
     ivec2 evenPosition = ((position + offset) / 2) * 2 - offset;
