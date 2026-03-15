@@ -23,6 +23,7 @@ bool IsDissolvableByAcid(Particle particle, float random)
         case CEMENT: return random < 0.005;
         case FOAM: return random < 0.15;
         case BRICK: return random < 0.003;
+        case GRASS: return random < 0.064;
         default: return false;
     }
 }

@@ -19,6 +19,7 @@ bool CanCatchFire(Particle particle, float random)
         case METHANE: return random < 0.38;
         case AMMONIA: return random < 0.003;
         case FOAM: return random < 0.041;
+        case GRASS: return random < 0.09;
         default: return false;
     }
 }
