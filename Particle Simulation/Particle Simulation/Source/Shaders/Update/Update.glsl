@@ -91,6 +91,7 @@ void SwapParticles(inout Particle particle1, inout Particle particle2)
 #include "UpdateFoam.glsl"
 #include "UpdateBrick.glsl"
 #include "UpdateGrass.glsl"
+#include "UpdateKelp.glsl"
 
 void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     inout Particle downLeft, inout Particle downRight, vec4 random)
@@ -123,6 +124,7 @@ void UpdateParticles(inout Particle upLeft, inout Particle upRight,
     UpdateFoam(upLeft, upRight, downLeft, downRight, random);
     UpdateBrick(upLeft, upRight, downLeft, downRight, random);
     UpdateGrass(upLeft, upRight, downLeft, downRight, random);
+    UpdateKelp(upLeft, upRight, downLeft, downRight, random);
 }
 
 void SetUpdatedParticle(ivec2 position, ivec2 offset, Particle upLeft,

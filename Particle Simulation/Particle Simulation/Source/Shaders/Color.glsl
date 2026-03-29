@@ -48,6 +48,7 @@ vec3 GetParticleColor(Particle particle)
         case FOAM: return particle.shade * 0.0009 + vec3(0.6, 0.76, 0.63);
         case BRICK: return particle.shade * 0.06 + vec3(0.49, 0.18, 0.18);
         case GRASS: return vec3(particle.shade * 0.012, 0.3 + max(0, (particle.shade - 16) * 8), 0);
+        case KELP: return particle.shade * 0.04 + vec3(0.39, 0.24, 0.02);
         default: return vec3(1, 0, 1);
     }
 }

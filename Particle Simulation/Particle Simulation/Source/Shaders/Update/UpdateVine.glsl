@@ -30,6 +30,7 @@ bool CanSupportVine(Particle particle, float random)
         case CEMENT: return random < 0.12;
         case FOAM: return random < 0.11;
         case BRICK: return random < 0.125;
+        case KELP: return random < 0.13;
         default: return false;
     }
 }

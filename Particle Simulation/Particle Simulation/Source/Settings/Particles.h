@@ -40,6 +40,7 @@ enum class ParticleType : int
 	Foam,
 	Brick,
 	Grass,
+	Kelp,
 
 	ParticleCount
 };
@@ -74,5 +75,6 @@ inline const char* ParticleLabels[] = {
 	"Random",
 	"Foam",
 	"Brick",
-	"Grass"
+	"Grass",
+	"Kelp"
 };

@@ -6,6 +6,7 @@ bool CanRustIron(Particle particle, float random)
         case STEAM: return random < 0.004;
         case SEAWATER: return random < 0.013;
         case SALT: return random < 0.0006;
+        case KELP: return random < 0.005;
         default: return false;
     }
 }

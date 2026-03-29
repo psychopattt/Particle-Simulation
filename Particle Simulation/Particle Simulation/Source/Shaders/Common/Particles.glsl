@@ -28,6 +28,7 @@
 #define FOAM 27
 #define BRICK 28
 #define GRASS 29
+#define KELP 30
 
 #define PHASE_STATIC 0
 #define PHASE_SOLID 1
@@ -68,6 +69,7 @@ int GetParticlePhase(int type)
         case FOAM: return PHASE_LIQUID;
         case BRICK: return PHASE_SOLID;
         case GRASS: return PHASE_SOLID;
+        case KELP: return PHASE_SOLID;
         default: return PHASE_STATIC;
     }
 }
@@ -106,6 +108,7 @@ float GetParticleDensity(int type)
         case FOAM: return 673.4;
         case BRICK: return 2060;
         case GRASS: return 1200;
+        case KELP: return 980;
         default: return 1;
     }
 }
