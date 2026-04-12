@@ -15,6 +15,7 @@ namespace DrawSettings
 	inline int LastPositionY = 0;
 	inline int CurrentPositionX = 0;
 	inline int CurrentPositionY = 0;
+	inline struct Particle* HoveredParticle = nullptr;
 
 	inline constexpr int MaxMouseButtonCount = 8;
 	inline int MouseButtonCount = MaxMouseButtonCount;

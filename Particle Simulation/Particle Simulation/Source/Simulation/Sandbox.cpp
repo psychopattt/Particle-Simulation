@@ -7,8 +7,10 @@
 #include "Settings/SandboxSettings.h"
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"
+#include "Shaders/Buffers/ComputeBuffer/ComputeBuffer.h"
 #include "Shaders/Buffers/DualComputeBuffer/DualComputeBuffer.h"
 #include "Simulation/SimulationDrawer/SimulationDrawer.h"
+#include "Simulation/SimulationMath/SimulationMath.h"
 
 Sandbox::Sandbox(int width, int height, unsigned int seed) :
 	Simulation(width, height, seed) { };
@@ -20,6 +22,7 @@ void Sandbox::Initialize(int width, int height, unsigned int seed)
 	Simulation::Initialize(width, height, seed);
 
 	SandboxSettings::Frame = 0;
+	DrawSettings::HoveredParticle = nullptr;
 	simDrawer = make_unique<SimulationDrawer>();
 	particlesBuffers = make_unique<DualComputeBuffer>(sizeof(Particle) * width * height);
 
@@ -78,6 +81,7 @@ void Sandbox::Draw()
 	using DrawSettings::AirColor;
 
 	ExecuteDrawMode();
+	UpdateHoveredParticle();
 
 	colorShader->SetUniform("airColor", AirColor[0], AirColor[1], AirColor[2]);
 	colorShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
@@ -98,6 +102,30 @@ void Sandbox::ExecuteDrawMode()
 		drawShader->SetUniform("drawType", DrawSettings::DrawType);
 		drawShader->SetUniform("frame", SandboxSettings::Frame);
 		drawShader->Execute();
+	}
+}
+
+void Sandbox::UpdateHoveredParticle()
+{
+	if (!SandboxSettings::ShowParticleInfo)
+		return;
+
+	DrawSettings::HoveredParticle = nullptr;
+	int particleId = SimulationMath::ConvertPixelCoordsToPixelId(
+		DrawSettings::CurrentPositionX, DrawSettings::CurrentPositionY
+	);
+
+	if (particleId != -1)
+	{
+		size_t particleOffset = particleId * sizeof(Particle);
+		ComputeBuffer* buffer = particlesBuffers->GetBuffer(1);
+		void* particle = buffer->Map(GL_MAP_READ_BIT, particleOffset, sizeof(Particle));
+
+		if (particle)
+		{
+			DrawSettings::HoveredParticle = static_cast<Particle*>(particle);
+			buffer->Unmap();
+		}
 	}
 }
 

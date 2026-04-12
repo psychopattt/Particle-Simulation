@@ -20,6 +20,7 @@ class Sandbox : public Simulation
 		void InitializeRenderTexture();
 		void InitializeShaders();
 		void ExecuteDrawMode();
+		void UpdateHoveredParticle();
 
 		unique_ptr<class Texture> texture;
 		unique_ptr<class SimulationDrawer> simDrawer;

@@ -4,6 +4,7 @@
 #include "imgui/imgui.h"
 
 #include "Settings/DrawSettings.h"
+#include "Settings/SandboxSettings.h"
 #include "Settings/TransformSettings.h"
 #include "Simulation/SimulationMath/SimulationMath.h"
 
@@ -43,12 +44,15 @@ void SandboxMouseHandler::ApplyMousePan()
 	{
 		DrawSettings::Drawing = false;
 		MouseHandler::ApplyMousePan();
+
+		if (SandboxSettings::ShowParticleInfo)
+			UpdateMousePositions();
 	}
 }
 
 void SandboxMouseHandler::UpdateDrawSettings()
 {
-	UpdateDrawPositions();
+	UpdateMousePositions();
 	DrawSettings::Drawing = false;
 
 	for (int button = 0; button < DrawSettings::MouseButtonCount; button++)
@@ -63,7 +67,7 @@ void SandboxMouseHandler::UpdateDrawSettings()
 	}
 }
 
-void SandboxMouseHandler::UpdateDrawPositions()
+void SandboxMouseHandler::UpdateMousePositions()
 {
 	using DrawSettings::CurrentPositionX, DrawSettings::CurrentPositionY;
 

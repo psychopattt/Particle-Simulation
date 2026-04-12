@@ -13,5 +13,5 @@ class SandboxMouseHandler : public MouseHandler
 
 	private:
 		void UpdateDrawSettings();
-		void UpdateDrawPositions();
+		void UpdateMousePositions();
 };
