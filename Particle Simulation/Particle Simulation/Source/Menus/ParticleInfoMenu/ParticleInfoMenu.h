@@ -12,8 +12,10 @@ class ParticleInfoMenu : public ImGuiWindow
 
 	private:
 		Position position;
+		const int padding = 10;
 		int windowFlags;
 
+		void ApplyPosition();
 		void RenderMainMenu();
 		void RenderPositionMenu();
 		void RenderPositionSelectable(const char* label, Position value);
