@@ -16,9 +16,20 @@ enum Position : signed char
 	BottomRight = 3
 };
 
+enum DisplayFlags : unsigned char
+{
+	None = 0,
+	Type = 1 << 0,
+	Phase = 1 << 1,
+	Density = 1 << 2,
+	Shade = 1 << 3,
+	Everything = 0xFF
+};
+
 ParticleInfoMenu::ParticleInfoMenu()
 {
 	position = BottomRight;
+	displayFlags = static_cast<DisplayFlags>(Type | Phase);
 	windowFlags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNavInputs;
 }
@@ -75,6 +86,9 @@ void ParticleInfoMenu::RenderMainMenu()
 {
 	if (BeginPopupContextWindow())
 	{
+		if (BeginMenu("Display"))
+			RenderDisplayMenu();
+
 		if (BeginMenu("Position"))
 			RenderPositionMenu();
 
@@ -83,6 +97,21 @@ void ParticleInfoMenu::RenderMainMenu()
 
 		EndPopup();
 	}
+}
+
+void ParticleInfoMenu::RenderDisplayMenu()
+{
+	RenderDisplaySelectable("Type", Type);
+	RenderDisplaySelectable("Phase", Phase);
+	RenderDisplaySelectable("Density", Density);
+	RenderDisplaySelectable("Shade", Shade);
+	EndMenu();
+}
+
+void ParticleInfoMenu::RenderDisplaySelectable(const char* label, DisplayFlags value)
+{
+	if (Selectable(label, displayFlags & value, ImGuiSelectableFlags_NoAutoClosePopups))
+		displayFlags = static_cast<DisplayFlags>(displayFlags ^ value);
 }
 
 void ParticleInfoMenu::RenderPositionMenu()
