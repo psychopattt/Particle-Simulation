@@ -1,5 +1,6 @@
 #include "Inputs/SandboxKeyboardHandler/SandboxKeyboardHandler.h"
 #include "Inputs/SandboxMouseHandler/SandboxMouseHandler.h"
+#include "Menus/ParticleInfoMenu/ParticleInfoMenu.h"
 #include "Menus/ParticlesMenu/ParticlesMenu.h"
 #include "Menus/SandboxMenu/SandboxMenu.h"
 #include "Menus/WindowsMenu/WindowsMenu.h"
@@ -15,7 +16,8 @@ int main()
 	WindowsMenu windowsMenu = WindowsMenu();
 	SandboxMenu sandboxMenu = SandboxMenu();
 	ParticlesMenu particlesMenu = ParticlesMenu();
-	ImGuiWindow* menus[] = { &windowsMenu, &sandboxMenu, &particlesMenu };
+	ParticleInfoMenu infoMenu = ParticleInfoMenu();
+	ImGuiWindow* menus[] = { &windowsMenu, &sandboxMenu, &particlesMenu, &infoMenu };
 
 	OCSFW(&simulation)
 		.WithTitle("Particle Simulation")

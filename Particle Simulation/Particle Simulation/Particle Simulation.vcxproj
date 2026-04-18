@@ -95,6 +95,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="OCSFW\Source\Shaders\ShaderMerger\ShaderMerger.cpp" />
+    <ClCompile Include="Source\Menus\ParticleInfoMenu\ParticleInfoMenu.cpp" />
     <ClCompile Include="Source\Menus\ParticlesMenu\ParticlesMenu.cpp" />
     <ClCompile Include="Source\Inputs\SandboxKeyboardHandler\SandboxKeyboardHandler.cpp" />
     <ClCompile Include="Source\Inputs\SandboxMouseHandler\SandboxMouseHandler.cpp" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OCSFW\Source\Shaders\ShaderMerger\ShaderMerger.h" />
+    <ClInclude Include="Source\Menus\ParticleInfoMenu\ParticleInfoMenu.h" />
     <ClInclude Include="Source\Menus\ParticlesMenu\ParticlesMenu.h" />
     <ClInclude Include="Source\Inputs\SandboxKeyboardHandler\SandboxKeyboardHandler.h" />
     <ClInclude Include="Source\Inputs\SandboxMouseHandler\SandboxMouseHandler.h" />

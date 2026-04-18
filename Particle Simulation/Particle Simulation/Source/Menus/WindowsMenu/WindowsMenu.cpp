@@ -14,6 +14,7 @@ void WindowsMenu::Render()
 		{
 			Checkbox("Sandbox Settings", &SandboxSettings::ShowSandboxSettings);
 			Checkbox("Particles", &SandboxSettings::ShowParticles);
+			Checkbox("Particle Info", &SandboxSettings::ShowParticleInfo);
 		}
 	}
 
