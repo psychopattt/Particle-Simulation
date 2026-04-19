@@ -78,3 +78,10 @@ inline const char* ParticleLabels[] = {
 	"Grass",
 	"Kelp"
 };
+
+inline const char* ParticlePhases[] = {
+	"Static",
+	"Solid",
+	"Liquid",
+	"Gas"
+};

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Interface/ImGui/ImGuiWindow/ImGuiWindow.h"
 
 enum Position : signed char;
@@ -12,12 +14,17 @@ class ParticleInfoMenu : public ImGuiWindow
 		void Render() override;
 
 	private:
+		int windowFlags;
+		std::string info;
 		Position position;
 		DisplayFlags displayFlags;
 		const int padding = 10;
-		int windowFlags;
 
 		void ApplyPosition();
+		void RenderInfo();
+		std::string FormatInfo(float value, int decimals);
+		void AppendInfo(DisplayFlags type, const char* label, std::string value);
+		void AppendInfo(DisplayFlags type, const char* label, const char* value);
 		void RenderMainMenu();
 		void RenderDisplayMenu();
 		void RenderDisplaySelectable(const char* label, DisplayFlags value);
