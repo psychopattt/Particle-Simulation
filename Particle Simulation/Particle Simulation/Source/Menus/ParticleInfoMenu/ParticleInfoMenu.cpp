@@ -39,15 +39,20 @@ ParticleInfoMenu::ParticleInfoMenu()
 void ParticleInfoMenu::Render()
 {
 	if (!SandboxSettings::ShowParticleInfo)
+	{
+		minWidth = 0;
 		return;
+	}
 
 	ApplyPosition();
 	SetNextWindowBgAlpha(0.75f);
+	SetNextWindowSizeConstraints(ImVec2(minWidth, 0), ImVec2(FLT_MAX, FLT_MAX));
 
 	if (Begin("Particle Info", &SandboxSettings::ShowParticleInfo, windowFlags))
 	{
 		RenderInfo();
 		RenderMainMenu();
+		minWidth = std::max(minWidth, GetWindowWidth());
 	}
 
 	End();

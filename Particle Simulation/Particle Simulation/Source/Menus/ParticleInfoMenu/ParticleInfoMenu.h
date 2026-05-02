@@ -19,6 +19,7 @@ class ParticleInfoMenu : public ImGuiWindow
 		Position position;
 		DisplayFlags displayFlags;
 		const int padding = 10;
+		float minWidth = 0;
 
 		void ApplyPosition();
 		void RenderInfo();
