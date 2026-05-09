@@ -53,5 +53,14 @@ void SandboxMenu::RenderPostProcessingSettings()
 	{
 		SeparatorText("Background Color");
 		ColorEdit3("##editAirColor", AirColor);
+
+		SeparatorText("Brightness");
+		SliderFloat("##sliderBrightness", &Brightness, 0, 3, "%.2f");
+
+		SeparatorText("Saturation");
+		SliderFloat("##sliderSaturation", &Saturation, 0, 3, "%.2f");
+
+		SeparatorText("Contrast");
+		SliderFloat("##sliderContrast", &Contrast, 0, 3, "%.2f");
 	}
 }

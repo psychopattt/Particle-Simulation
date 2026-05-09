@@ -60,6 +60,9 @@ void Sandbox::InitializeShaders()
 	colorShader = make_unique<ComputeShader>("Color", width, height);
 	colorShader->SetTextureBinding("texture", texture->GetId());
 	colorShader->SetUniform("size", width, height);
+
+	contrastShader = make_unique<ComputeShader>("Contrast", width, height);
+	contrastShader->SetTextureBinding("texture", texture->GetId());
 }
 
 void Sandbox::Restart()
@@ -81,11 +84,7 @@ void Sandbox::Draw()
 {
 	ExecuteDrawMode();
 	UpdateHoveredParticle();
-
-	using PostProcessingSettings::AirColor;
-	colorShader->SetUniform("airColor", AirColor[0], AirColor[1], AirColor[2]);
-	colorShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
-	colorShader->Execute();
+	ExecutePostProcessing();
 
 	simDrawer->Draw(texture.get());
 }
@@ -126,6 +125,23 @@ void Sandbox::UpdateHoveredParticle()
 			DrawSettings::HoveredParticle = static_cast<Particle*>(particle);
 			buffer->Unmap();
 		}
+	}
+}
+
+void Sandbox::ExecutePostProcessing()
+{
+	using namespace PostProcessingSettings;
+
+	colorShader->SetUniform("airColor", AirColor[0], AirColor[1], AirColor[2]);
+	colorShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
+	colorShader->Execute();
+
+	if (std::max({ std::abs(Brightness - 1), std::abs(Saturation - 1), std::abs(Contrast - 1) }) > 0.005)
+	{
+		contrastShader->SetUniform("brightness", Brightness);
+		contrastShader->SetUniform("saturation", Saturation);
+		contrastShader->SetUniform("contrast", Contrast);
+		contrastShader->Execute();
 	}
 }
 

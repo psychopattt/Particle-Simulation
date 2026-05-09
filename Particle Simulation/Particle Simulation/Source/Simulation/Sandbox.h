@@ -21,6 +21,7 @@ class Sandbox : public Simulation
 		void InitializeShaders();
 		void ExecuteDrawMode();
 		void UpdateHoveredParticle();
+		void ExecutePostProcessing();
 
 		unique_ptr<class Texture> texture;
 		unique_ptr<class SimulationDrawer> simDrawer;
@@ -29,5 +30,7 @@ class Sandbox : public Simulation
 		unique_ptr<class ComputeShader> initShader;
 		unique_ptr<class ComputeShader> updateShader;
 		unique_ptr<class ComputeShader> drawShader;
+
 		unique_ptr<class ComputeShader> colorShader;
+		unique_ptr<class ComputeShader> contrastShader;
 };
