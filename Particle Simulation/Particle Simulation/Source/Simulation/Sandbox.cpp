@@ -5,6 +5,7 @@
 #include "Settings/Particles.h"
 #include "Settings/DrawSettings.h"
 #include "Settings/SandboxSettings.h"
+#include "Settings/PostProcessingSettings.h"
 #include "Shaders/Buffers/Texture/Texture.h"
 #include "Shaders/ComputeShader/ComputeShader.h"
 #include "Shaders/Buffers/ComputeBuffer/ComputeBuffer.h"
@@ -78,11 +79,10 @@ void Sandbox::Execute()
 
 void Sandbox::Draw()
 {
-	using DrawSettings::AirColor;
-
 	ExecuteDrawMode();
 	UpdateHoveredParticle();
 
+	using PostProcessingSettings::AirColor;
 	colorShader->SetUniform("airColor", AirColor[0], AirColor[1], AirColor[2]);
 	colorShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
 	colorShader->Execute();

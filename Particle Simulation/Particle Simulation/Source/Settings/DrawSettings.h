@@ -7,7 +7,6 @@ namespace DrawSettings
 	inline bool DrawMode = true;
 	inline bool Drawing = false;
 	inline bool Overwrite = false;
-	inline float AirColor[3] = { 0, 0, 0 };
 	inline float DrawRadius = 2.5f;
 	inline int DrawType = 0;
 

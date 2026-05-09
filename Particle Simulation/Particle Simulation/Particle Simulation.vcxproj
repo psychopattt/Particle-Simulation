@@ -150,6 +150,7 @@
     <ClInclude Include="Source\Menus\SandboxMenu\SandboxMenu.h" />
     <ClInclude Include="Source\Settings\DrawSettings.h" />
     <ClInclude Include="Source\Settings\Particles.h" />
+    <ClInclude Include="Source\Settings\PostProcessingSettings.h" />
     <ClInclude Include="Source\Settings\SandboxSettings.h" />
     <ClInclude Include="Source\Simulation\Sandbox.h" />
     <ClInclude Include="OCSFW\Libraries\include\glad\gl.h" />

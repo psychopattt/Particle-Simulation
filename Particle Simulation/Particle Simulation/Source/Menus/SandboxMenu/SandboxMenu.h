@@ -7,4 +7,8 @@ class SandboxMenu : public ImGuiWindow
 	public:
 		void Initialize() override;
 		void Render() override;
+
+	private:
+		void RenderDrawSettings();
+		void RenderPostProcessingSettings();
 };
