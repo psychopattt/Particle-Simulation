@@ -54,6 +54,11 @@ void SandboxMenu::RenderPostProcessingSettings()
 		SeparatorText("Background Color");
 		ColorEdit3("##editAirColor", AirColor);
 
+		SeparatorText("Outline");
+		Checkbox("##checkOutline", &DrawOutline);
+		SameLine();
+		ColorEdit3("##editOutlineColor", OutlineColor);
+
 		SeparatorText("Brightness");
 		SliderFloat("##sliderBrightness", &Brightness, 0, 3, "%.2f");
 

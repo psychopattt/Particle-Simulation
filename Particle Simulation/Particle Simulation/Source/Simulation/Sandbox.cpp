@@ -63,6 +63,10 @@ void Sandbox::InitializeShaders()
 
 	contrastShader = make_unique<ComputeShader>("Contrast", width, height);
 	contrastShader->SetTextureBinding("texture", texture->GetId());
+
+	outlineShader = make_unique<ComputeShader>("Outline", width, height);
+	outlineShader->SetTextureBinding("texture", texture->GetId());
+	outlineShader->SetUniform("size", width, height);
 }
 
 void Sandbox::Restart()
@@ -143,6 +147,13 @@ void Sandbox::ExecutePostProcessing()
 		contrastShader->SetUniform("saturation", Saturation);
 		contrastShader->SetUniform("contrast", Contrast);
 		contrastShader->Execute();
+	}
+
+	if (DrawOutline)
+	{
+		outlineShader->SetUniform("outlineColor", OutlineColor[0], OutlineColor[1], OutlineColor[2]);
+		outlineShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
+		outlineShader->Execute();
 	}
 }
 

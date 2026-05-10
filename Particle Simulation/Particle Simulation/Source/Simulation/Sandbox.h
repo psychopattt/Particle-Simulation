@@ -33,4 +33,5 @@ class Sandbox : public Simulation
 
 		unique_ptr<class ComputeShader> colorShader;
 		unique_ptr<class ComputeShader> contrastShader;
+		unique_ptr<class ComputeShader> outlineShader;
 };
