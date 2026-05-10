@@ -131,12 +131,13 @@ void Sandbox::UpdateHoveredParticle()
 void Sandbox::ExecutePostProcessing()
 {
 	using namespace PostProcessingSettings;
+	using std::abs;
 
 	colorShader->SetUniform("airColor", AirColor[0], AirColor[1], AirColor[2]);
 	colorShader->SetBufferBinding("particlesBuffer", particlesBuffers->GetId(1));
 	colorShader->Execute();
 
-	if (std::max({ std::abs(Brightness - 1), std::abs(Saturation - 1), std::abs(Contrast - 1) }) > 0.005)
+	if (abs(Brightness - 1) > 0.005 || abs(Saturation - 1)  > 0.005 || abs(Contrast - 1) > 0.005)
 	{
 		contrastShader->SetUniform("brightness", Brightness);
 		contrastShader->SetUniform("saturation", Saturation);
