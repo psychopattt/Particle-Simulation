@@ -38,9 +38,7 @@ bool CanSupportVine(Particle particle, float random)
 bool KillVine(inout Particle particle, float probability, float random)
 {
     bool dead = particle.type == VINE && random < probability;
-
-    if (dead)
-        particle = CreateParticle(AIR, 0);
+    particle = dead ? CreateParticle(AIR, 0) : particle;
 
     return dead;
 }

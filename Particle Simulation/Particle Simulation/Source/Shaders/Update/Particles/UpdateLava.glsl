@@ -25,9 +25,7 @@ bool CanMeltIntoLava(Particle particle, float random)
 bool SolidifyLava(inout Particle particle, float probability, float random)
 {
     bool solidified = particle.type == LAVA && random < probability;
-
-    if (solidified)
-        particle = CreateParticle(ROCK, particle.shade);
+    particle = solidified ? CreateParticle(ROCK, particle.shade) : particle;
 
     return solidified;
 }

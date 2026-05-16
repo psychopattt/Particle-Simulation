@@ -1,8 +1,3 @@
-bool IsFreezableByIce(Particle particle, float random)
-{
-    return particle.type == WATER && random < 0.05;
-}
-
 bool CanMeltIce(Particle particle, float random)
 {
     switch (particle.type)
@@ -17,7 +12,7 @@ bool CanMeltIce(Particle particle, float random)
 
 void FreezeParticleIntoIce(inout Particle particle, float random)
 {
-    if (IsFreezableByIce(particle, random))
+    if (particle.type == WATER && random < 0.05)
         particle = CreateParticle(ICE, particle.shade);
 }
 
