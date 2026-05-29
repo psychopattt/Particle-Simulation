@@ -20,7 +20,7 @@ class ParticlesMenu : public ImGuiWindow
 		
 		int hoveredParticle = -1;
 		int lastHoveredParticle = -1;
-		int sortedParticleIds[static_cast<int>(ParticleType::ParticleCount)];
+		int sortedParticleIds[static_cast<int>(ParticleType::ParticleCount)] = { };
 
 		const float itemSpacing = 15;
 		const float itemPadding = itemSpacing / 2;
