@@ -1,5 +1,7 @@
 # Particle Simulation
 [Falling sand](https://en.wikipedia.org/wiki/Falling-sand_game) game using [OCSFW](https://github.com/psychopattt/OCSFW) (GLFW, OpenGL and Dear ImGui)
+<br>
+Demo video available [here](https://youtu.be/rCaVBj4KN5U)
 
 ## Features
 - 31 particle types
