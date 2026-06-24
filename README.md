@@ -10,6 +10,7 @@ Demo video available [here](https://youtu.be/rCaVBj4KN5U)
 - Draw settings
   - Toggle between draw mode and view mode (E)
   - Select draw radius (scroll wheel)
+  - Overwrite particles (shift)
 - Customizable post-processing
   - Background and outline colors
   - Brightness, saturation and contrast
